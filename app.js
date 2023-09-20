@@ -3,7 +3,7 @@ const { MongoClient } = require("mongodb");
 try{
   
 
-}catch{
+}catch (err) {
 
 }
 
@@ -13,9 +13,7 @@ async function run() {
   // Altas cluster specifics. Be sure it includes
   // a valid username and password! Note that in a production environment,
   // you do not want to store your password in plain-text here.
-  const uri =
-    "mongodb+srv://isaiah:<password>@cluster0.uijsyak.mongodb.net/?retryWrites=true&w=majority";
-
+  const uri = "mongodb+srv://LSMTest:wztYw7BcN6bNqL50@cluster0.uijsyak.mongodb.net/?retryWrites=true&w=majority";
   // The MongoClient is the object that references the connection to our
   // datastore (Atlas, for example)
   const client = new MongoClient(uri);
@@ -174,7 +172,7 @@ async function run() {
    *      the recipes.
    */
 
-
+/** 
   const deleteQuery = { name: { $in: ["elotes", "fried rice"] } };
   try {
     const deleteResult = await collection.deleteMany(deleteQuery);
@@ -182,6 +180,8 @@ async function run() {
   } catch (err) {
     console.error(`Something went wrong trying to delete documents: ${err}\n`);
   }
+
+  */
 
   // Make sure to call close() on your client to perform cleanup operations
   await client.close();
