@@ -1,0 +1,13 @@
+[
+    {"operation": "insert", "key": "X", "value": "ValueX"},
+    {"operation": "insert", "key": "Y", "value": "ValueY"},
+    {"operation": "insert", "key": "Z", "value": "ValueZ"},
+    {"operation": "delete", "key": "X"},
+    {"operation": "update", "key": "Y", "new_value": "UpdatedValueY"},
+    {"operation": "insert", "key": "W", "value": "ValueW"},
+    {"operation": "update", "key": "Z", "new_value": "UpdatedValueZ"},
+    {"operation": "delete", "key": "W"},
+    {"operation": "insert", "key": "K", "value": "ValueK"},
+    {"operation": "insert", "key": "L", "value": "ValueL"}
+  ]
+  
