@@ -1,11 +1,6 @@
 const { MongoClient } = require("mongodb");
-
-try{
-  
-
-}catch (err) {
-
-}
+const fs = require("fs");
+const path = require("path");
 
 async function run() {
   // TODO:
@@ -26,13 +21,14 @@ async function run() {
   // Provide the name of the database and collection you want to use.
   // If the database and/or collection do not exist, the driver and Atlas
   // will create them automatically when you first write data.
-  const dbName = "myDatabase";
-  const collectionName = "recipes";
+  const dbName = "LSMDatabase";
+  const collectionName = "transaction_logs";
 
   // Create references to the database and collection in order to run
   // operations on them.
   const database = client.db(dbName);
   const collection = database.collection(collectionName);
+
 
   /*
    *  *** INSERT DOCUMENTS ***
@@ -41,63 +37,48 @@ async function run() {
    * In this example, we're going to create four documents and then
    * insert them all in one call with collection.insertMany().
    */
-
-  const recipes = [
-    {
-      name: "elotes",
-      ingredients: [
-        "corn",
-        "mayonnaise",
-        "cotija cheese",
-        "sour cream",
-        "lime",
-      ],
-      prepTimeInMinutes: 35,
-    },
-    {
-      name: "loco moco",
-      ingredients: [
-        "ground beef",
-        "butter",
-        "onion",
-        "egg",
-        "bread bun",
-        "mushrooms",
-      ],
-      prepTimeInMinutes: 54,
-    },
-    {
-      name: "patatas bravas",
-      ingredients: [
-        "potato",
-        "tomato",
-        "olive oil",
-        "onion",
-        "garlic",
-        "paprika",
-      ],
-      prepTimeInMinutes: 80,
-    },
-    {
-      name: "fried rice",
-      ingredients: [
-        "rice",
-        "soy sauce",
-        "egg",
-        "onion",
-        "pea",
-        "carrot",
-        "sesame oil",
-      ],
-      prepTimeInMinutes: 40,
-    },
-  ];
-
   try {
-    const insertManyResult = await collection.insertMany(recipes);
-    console.log(`${insertManyResult.insertedCount} documents successfully inserted.\n`);
+    // Folder path where the transaction logs are located
+  const logsFolderPath = path.join(__dirname, "transaction_logs");
+
+  // Read all JSON files in the transaction logs folder
+  const logFiles = fs.readdirSync(logsFolderPath);
+  
+  // Process each JSON file in the folder
+  for (const logFile of logFiles) {
+    if (logFile.endsWith(".json")) {
+      const logFilePath = path.join(logsFolderPath, logFile);
+      const logsData = fs.readFileSync(logFilePath, "utf8");
+      const transactionLogs = JSON.parse(logsData);
+
+      for (const logEntry of transactionLogs) {
+        switch (logEntry.operation) {
+          case "insert":
+            await collection.insertOne({ key: logEntry.key, value: logEntry.value });
+            console.log(`Inserted document with key: ${logEntry.key}`);
+            break;
+
+          case "delete":
+            await collection.deleteOne({ key: logEntry.key });
+            console.log(`Deleted document with key: ${logEntry.key}`);
+            break;
+
+          case "update":
+            await collection.updateOne(
+              { key: logEntry.key },
+              { $set: { value: logEntry.new_value } }
+            );
+            console.log(`Updated document with key: ${logEntry.key}`);
+            break;
+
+          default:
+            console.log(`Unknown operation: ${logEntry.operation}`);
+        }
+      }
+    }
+  }  
   } catch (err) {
-    console.error(`Something went wrong trying to insert the new documents: ${err}\n`);
+    console.error(`Error processing transaction logs: ${err}`);
   }
 
   /*
@@ -107,7 +88,7 @@ async function run() {
    * the data in a collection, we call Find() with an empty filter.
    * The Builders class is very helpful when building complex
    * filters, and is used here to show its most basic use.
-   */
+   
 
   const findQuery = { prepTimeInMinutes: { $lt: 45 } };
 
@@ -136,6 +117,8 @@ async function run() {
   } catch (err) {
     console.error(`Something went wrong trying to find one document: ${err}\n`);
   }
+   */
+
 
   /*
    * *** UPDATE A DOCUMENT ***
@@ -144,8 +127,9 @@ async function run() {
    *
    * Here we update the PrepTimeInMinutes value on the document we
    * just found.
-   */
+   
   const updateDoc = { $set: { prepTimeInMinutes: 72 } };
+   
 
   // The following updateOptions document specifies that we want the *updated*
   // document to be returned. By default, we get the document as it was *before*
@@ -162,6 +146,7 @@ async function run() {
   } catch (err) {
     console.error(`Something went wrong trying to update one document: ${err}\n`);
   }
+   */
 
   /*      *** DELETE DOCUMENTS ***
    *
