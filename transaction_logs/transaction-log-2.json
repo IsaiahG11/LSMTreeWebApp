@@ -1,13 +1,71 @@
 [
-    {"operation": "insert", "key": "A", "value": "ValueA"},
-    {"operation": "insert", "key": "B", "value": "ValueB"},
-    {"operation": "insert", "key": "C", "value": "ValueC"},
-    {"operation": "delete", "key": "B"},
-    {"operation": "update", "key": "A", "new_value": "UpdatedValueA"},
-    {"operation": "insert", "key": "D", "value": "ValueD"},
-    {"operation": "update", "key": "C", "new_value": "UpdatedValueC"},
-    {"operation": "delete", "key": "D"},
-    {"operation": "insert", "key": "E", "value": "ValueE"},
-    {"operation": "insert", "key": "F", "value": "ValueF"}
+  {
+    "operation": "insert",
+    "data": {
+      "key": "A",
+      "value": "ValueA"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "B",
+      "value": "ValueB"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "C",
+      "value": "ValueC"
+    }
+  },
+  {
+    "operation": "delete",
+    "data": {
+      "key": "B"
+    }
+  },
+  {
+    "operation": "update",
+    "data": {
+      "key": "A",
+      "new_value": "UpdatedValueA"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "D",
+      "value": "ValueD"
+    }
+  },
+  {
+    "operation": "update",
+    "data": {
+      "key": "C",
+      "new_value": "UpdatedValueC"
+    }
+  },
+  {
+    "operation": "delete",
+    "data": {
+      "key": "D"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "E",
+      "value": "ValueE"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "F",
+      "value": "ValueF"
+    }
+  }  
   ]
   

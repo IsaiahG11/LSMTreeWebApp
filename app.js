@@ -27,7 +27,7 @@ async function run() {
   // If the database and/or collection do not exist, the driver and Atlas
   // will create them automatically when you first write data.
   const dbName = "LSMDatabase";
-  const collectionName = "transaction_logs";
+  const collectionName = "transaction_logs_two";
 
   // Create references to the database and collection in order to run
   // operations on them.
@@ -57,12 +57,16 @@ async function run() {
       const transactionLogs = JSON.parse(logsData);
 
       for (const logEntry of transactionLogs) {
+
+        /**
         switch (logEntry.operation) {
           case "insert":
-            await collection.insertOne({ key: logEntry.key, value: logEntry.value });
-            console.log(`Inserted document with key: ${logEntry.key}`);
-            break;
+        */
 
+        await collection.insertOne({ operation: logEntry.operation, data: logEntry.data });
+        console.log(`Inserted document with key: ${logEntry.data.key}`);
+
+/**
           case "delete":
             await collection.deleteOne({ key: logEntry.key });
             console.log(`Deleted document with key: ${logEntry.key}`);
@@ -79,6 +83,7 @@ async function run() {
           default:
             console.log(`Unknown operation: ${logEntry.operation}`);
         }
+        */
       }
     }
   }  
