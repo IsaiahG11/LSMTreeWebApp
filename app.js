@@ -26,13 +26,10 @@ async function run() {
   // Provide the name of the database and collection you want to use.
   // If the database and/or collection do not exist, the driver and Atlas
   // will create them automatically when you first write data.
-  const dbName = "LSMDatabase";
-  const collectionName = "transaction_logs_two";
-
+  const dbName = "transaction_logs";
   // Create references to the database and collection in order to run
   // operations on them.
   const database = client.db(dbName);
-  const collection = database.collection(collectionName);
 
 
   /*
@@ -50,8 +47,11 @@ async function run() {
   const logFiles = fs.readdirSync(logsFolderPath);
   
   // Process each JSON file in the folder
+  log_count = 1
   for (const logFile of logFiles) {
     if (logFile.endsWith(".json")) {
+      collectionName = "log" + log_count;
+      collection = database.collection(collectionName)
       const logFilePath = path.join(logsFolderPath, logFile);
       const logsData = fs.readFileSync(logFilePath, "utf8");
       const transactionLogs = JSON.parse(logsData);
@@ -85,6 +85,7 @@ async function run() {
         }
         */
       }
+      log_count++;
     }
   }  
   } catch (err) {
