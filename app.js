@@ -1,7 +1,7 @@
 /**
  * @author Dylan Miller & Isaiah Hermance
  * @version September 2023
- * @class 
+ * @class Converts text files to collections for our MongoDB database
  */
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
@@ -44,12 +44,13 @@ async function run() {
         //clears the collection of any data if it already exists
         await collection.deleteMany();
 
+        //finds the files, reads them, parses them to JSON objects
         const logFilePath = path.join(logsFolderPath, logFile);
         const logsData = fs.readFileSync(logFilePath, "utf8");
         const transactionLogs = JSON.parse(logsData);
 
+        //adds the entries to the collection
         for (const logEntry of transactionLogs) {
-
           await collection.insertOne({ operation: logEntry.operation, data: logEntry.data });
           console.log(`Inserted document with key: ${logEntry.data.key}`);
         }
