@@ -9,178 +9,57 @@ const path = require("path");
 require('dotenv').config();
 
 async function run() {
-  // TODO: 
-  // Replace the placeholder connection string below with your
-  // Altas cluster specifics. Be sure it includes
-  // a valid username and password! Note that in a production environment,
-  // you do not want to store your password in plain-text here.
+  // connection string with Altas cluster specifics stored in .env
   const uri = process.env.MONGODB_URI; //uses environment variable
   // The MongoClient is the object that references the connection to our
   // datastore (Atlas, for example)
   const client = new MongoClient(uri, { useUnifiedTopology: true });
 
-  // The connect() method does not attempt a connection; instead it instructs
-  // the driver to connect using the settings provided when a connection
-  // is required.
+  //connects to the specified MongoClient
   await client.connect();
 
-  // Provide the name of the database and collection you want to use.
-  // If the database and/or collection do not exist, the driver and Atlas
-  // will create them automatically when you first write data.
+  // Name of the target database to add data
   const dbName = "transaction_logs";
   // Create references to the database and collection in order to run
   // operations on them.
   const database = client.db(dbName);
 
-
-  /*
-   *  *** INSERT DOCUMENTS ***
-   *
-   * You can insert individual documents using collection.insert().
-   * In this example, we're going to create four documents and then
-   * insert them all in one call with collection.insertMany().
-   */
   try {
     // Folder path where the transaction logs are located
-  const logsFolderPath = path.join(__dirname, "transaction_logs");
+    const logsFolderPath = path.join(__dirname, "transaction_logs");
 
-  // Read all JSON files in the transaction logs folder
-  const logFiles = fs.readdirSync(logsFolderPath);
-  
-  // Process each JSON file in the folder
-  log_count = 1
-  for (const logFile of logFiles) {
-    if (logFile.endsWith(".json")) {
-      collectionName = "log" + log_count;
-      collection = database.collection(collectionName)
-      const logFilePath = path.join(logsFolderPath, logFile);
-      const logsData = fs.readFileSync(logFilePath, "utf8");
-      const transactionLogs = JSON.parse(logsData);
+    // Read all JSON files in the transaction logs folder
+    const logFiles = fs.readdirSync(logsFolderPath);
+    
+    
+    //counter for each log file
+    log_count = 1
+    // Process each JSON file in the folder
+    for (const logFile of logFiles) {
+      if (logFile.endsWith(".json")) {
+        //changes the current collection for each transaction log file
+        collectionName = "log" + log_count;
+        collection = database.collection(collectionName);
 
-      for (const logEntry of transactionLogs) {
+        //clears the collection of any data if it already exists
+        await collection.deleteMany();
 
-        /**
-        switch (logEntry.operation) {
-          case "insert":
-        */
+        const logFilePath = path.join(logsFolderPath, logFile);
+        const logsData = fs.readFileSync(logFilePath, "utf8");
+        const transactionLogs = JSON.parse(logsData);
 
-        await collection.insertOne({ operation: logEntry.operation, data: logEntry.data });
-        console.log(`Inserted document with key: ${logEntry.data.key}`);
+        for (const logEntry of transactionLogs) {
 
-/**
-          case "delete":
-            await collection.deleteOne({ key: logEntry.key });
-            console.log(`Deleted document with key: ${logEntry.key}`);
-            break;
-
-          case "update":
-            await collection.updateOne(
-              { key: logEntry.key },
-              { $set: { value: logEntry.new_value } }
-            );
-            console.log(`Updated document with key: ${logEntry.key}`);
-            break;
-
-          default:
-            console.log(`Unknown operation: ${logEntry.operation}`);
+          await collection.insertOne({ operation: logEntry.operation, data: logEntry.data });
+          console.log(`Inserted document with key: ${logEntry.data.key}`);
         }
-        */
+        log_count++;
       }
-      log_count++;
-    }
-  }  
+    }  
   } catch (err) {
     console.error(`Error processing transaction logs: ${err}`);
   }
 
-  /*
-   * *** FIND DOCUMENTS ***
-   *
-   * Now that we have data in Atlas, we can read it. To retrieve all of
-   * the data in a collection, we call Find() with an empty filter.
-   * The Builders class is very helpful when building complex
-   * filters, and is used here to show its most basic use.
-   
-
-  const findQuery = { prepTimeInMinutes: { $lt: 45 } };
-
-  try {
-    const cursor = await collection.find(findQuery).sort({ name: 1 });
-    await cursor.forEach(recipe => {
-      console.log(`${recipe.name} has ${recipe.ingredients.length} ingredients and takes ${recipe.prepTimeInMinutes} minutes to make.`);
-    });
-    // add a linebreak
-    console.log();
-  } catch (err) {
-    console.error(`Something went wrong trying to find the documents: ${err}\n`);
-  }
-
-  // We can also find a single document. Let's find the first document
-  // that has the string "potato" in the ingredients list.
-  const findOneQuery = { ingredients: "potato" };
-
-  try {
-    const findOneResult = await collection.findOne(findOneQuery);
-    if (findOneResult === null) {
-      console.log("Couldn't find any recipes that contain 'potato' as an ingredient.\n");
-    } else {
-      console.log(`Found a recipe with 'potato' as an ingredient:\n${JSON.stringify(findOneResult)}\n`);
-    }
-  } catch (err) {
-    console.error(`Something went wrong trying to find one document: ${err}\n`);
-  }
-   */
-
-
-  /*
-   * *** UPDATE A DOCUMENT ***
-   *
-   * You can update a single document or multiple documents in a single call.
-   *
-   * Here we update the PrepTimeInMinutes value on the document we
-   * just found.
-   
-  const updateDoc = { $set: { prepTimeInMinutes: 72 } };
-   
-
-  // The following updateOptions document specifies that we want the *updated*
-  // document to be returned. By default, we get the document as it was *before*
-  // the update.
-  const updateOptions = { returnOriginal: false };
-
-  try {
-    const updateResult = await collection.findOneAndUpdate(
-      findOneQuery,
-      updateDoc,
-      updateOptions,
-    );
-    console.log(`Here is the updated document:\n${JSON.stringify(updateResult.value)}\n`);
-  } catch (err) {
-    console.error(`Something went wrong trying to update one document: ${err}\n`);
-  }
-   */
-
-  /*      *** DELETE DOCUMENTS ***
-   *
-   *      As with other CRUD methods, you can delete a single document
-   *      or all documents that match a specified filter. To delete all
-   *      of the documents in a collection, pass an empty filter to
-   *      the DeleteMany() method. In this example, we'll delete two of
-   *      the recipes.
-   */
-
-/** 
-  const deleteQuery = { name: { $in: ["elotes", "fried rice"] } };
-  try {
-    const deleteResult = await collection.deleteMany(deleteQuery);
-    console.log(`Deleted ${deleteResult.deletedCount} documents\n`);
-  } catch (err) {
-    console.error(`Something went wrong trying to delete documents: ${err}\n`);
-  }
-
-  */
-
-  // Make sure to call close() on your client to perform cleanup operations
   await client.close();
 }
 run().catch(console.dir);
