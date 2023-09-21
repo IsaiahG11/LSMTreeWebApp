@@ -1,9 +1,14 @@
+/**
+ * @author Dylan Miller & Isaiah Hermance
+ * @version September 2023
+ * @class 
+ */
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const path = require("path");
 
 async function run() {
-  // TODO:
+  // TODO: 
   // Replace the placeholder connection string below with your
   // Altas cluster specifics. Be sure it includes
   // a valid username and password! Note that in a production environment,
@@ -11,7 +16,7 @@ async function run() {
   const uri = "mongodb+srv://LSMTest:wztYw7BcN6bNqL50@cluster0.uijsyak.mongodb.net/?retryWrites=true&w=majority";
   // The MongoClient is the object that references the connection to our
   // datastore (Atlas, for example)
-  const client = new MongoClient(uri);
+  const client = new MongoClient(uri, { useUnifiedTopology: true });
 
   // The connect() method does not attempt a connection; instead it instructs
   // the driver to connect using the settings provided when a connection
