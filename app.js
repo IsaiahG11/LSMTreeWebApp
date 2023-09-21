@@ -51,9 +51,10 @@ async function run() {
         for (const logEntry of transactionLogs) {
 
           await collection.insertOne({ operation: logEntry.operation, data: logEntry.data });
-          console.log(`Inserted document with key: ${logEntry.data.key}`);
+          console.log(`Inserted document with key: ${logEntry.data.key} to collection ${collectionName}`);
         }
         log_count++;
+        console.log();
       }
     }  
   } catch (err) {
