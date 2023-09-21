@@ -6,6 +6,7 @@
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const path = require("path");
+require('dotenv').config();
 
 async function run() {
   // TODO: 
@@ -13,7 +14,7 @@ async function run() {
   // Altas cluster specifics. Be sure it includes
   // a valid username and password! Note that in a production environment,
   // you do not want to store your password in plain-text here.
-  const uri = "mongodb+srv://LSMTest:wztYw7BcN6bNqL50@cluster0.uijsyak.mongodb.net/?retryWrites=true&w=majority";
+  const uri = process.env.MONGODB_URI; //uses environment variable
   // The MongoClient is the object that references the connection to our
   // datastore (Atlas, for example)
   const client = new MongoClient(uri, { useUnifiedTopology: true });
