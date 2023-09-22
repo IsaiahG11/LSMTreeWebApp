@@ -1,7 +1,7 @@
 /**
  * @author Dylan Miller & Isaiah Hermance
  * @version September 2023
- * @class Converts text files to collections for our MongoDB database
+ * @class Converts json files to collections for our MongoDB database
  */
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
