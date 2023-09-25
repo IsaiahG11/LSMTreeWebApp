@@ -25,6 +25,8 @@ function buildLog(){
 
     logStruct = [];
 
+    //While loop for repeating prompt and log building. Recursion will cause issues with logStruct.
+
     console.log("Current number of transactions in this log: " + numTransactions);
     newLog = prompt("Would you like to add a transaction to the current log? (y/n)\n");
 
@@ -37,13 +39,23 @@ function buildLog(){
     }else if(newLog === 'n' || newLog === 'N'){
         console.log("Please enter a file name for the transaction log omitting any extensions");
         fileName = prompt("Pressing enter without input will result in a default file name\n");
-        //turn the logStruct into JSON file with objects
+        saveAsJson(fileName, logStruct);
     }else{
         console.log("Enter a proper value (y/n)");
         buildLog();
     }
+}
 
-    return logStruct;
+function saveAsJson(fileName, logStruct){
+    jsonData = JSON.stringify(logStruct);
+
+    const fs = require('fs');
+    try{
+        fs.writeFile("./transaction_logs/" + fileName, jsonData);
+    }catch(err){
+        console.log("could not save log as JSON file");
+        process.exit(1);
+    }
 }
 
 function menu(){
