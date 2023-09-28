@@ -4,6 +4,8 @@
 * @class Gather transactions through user input for our MongoDB database
 */
 
+const prompt = require('prompt-sync')();
+
 numTransactions = 0;
 
 function buildTransaction(){
@@ -51,7 +53,7 @@ function saveAsJson(fileName, logStruct){
 
     const fs = require('fs');
     try{
-        fs.writeFile("./transaction_logs/" + fileName, jsonData);
+        fs.writeFile("./transaction_logs/" + fileName + ".json", jsonData);
     }catch(err){
         console.log("could not save log as JSON file");
         process.exit(1);
@@ -64,10 +66,10 @@ function menu(){
     menuOption = prompt("Please enter the number of an option\n");
 
     switch(menuOption){
-        case 1:
+        case '1':
             buildLog();
             break;
-        case 2:
+        case '2':
             process.exit(0);
             break;
         default:
@@ -80,4 +82,6 @@ function main(){
     console.log("Welcome to the custom transaction log generator");
     menu();
 }
+
+main();
 
