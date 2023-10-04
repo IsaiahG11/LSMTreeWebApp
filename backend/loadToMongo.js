@@ -33,13 +33,13 @@ async function run() {
     
     
     //counter for each log file
-    log_count = 1
+    let log_count = 1
     // Process each JSON file in the folder
     for (const logFile of logFiles) {
       if (logFile.endsWith(".json")) {
         //changes the current collection for each transaction log file
-        collectionName = "log" + log_count;
-        collection = database.collection(collectionName);
+        const collectionName = "log" + log_count;
+        const collection = database.collection(collectionName);
 
         //clears the collection of any data if it already exists
         await collection.deleteMany();
