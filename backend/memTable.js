@@ -1,8 +1,16 @@
+/**
+ * @author Dylan Miller & Isaiah Hermance
+ * @version October 2023
+ * @class Basic implementation of a single layer skip list memtable
+ */
 
+const fs = require('fs'); // Import the 'fs' module
+const SSTable = require('./ssTable'); // Import the SSTable module
 
 class SkipList{
     constructor(head = null){
         this.head = head;
+        this.memTableSize = 0; //
     }
 
 
@@ -37,6 +45,30 @@ class SkipList{
             node.next = tmp.next;
             tmp.next = node;
         }
+
+        this.memTableSize++ //
+
+        if(this.memTableSize > 3) { //
+            this.writeMemTableToSSTable(sstable);
+            this.memTableSize = 0;
+        }
+        
+    }
+
+    writeMemTableToSSTable(sstable) { //
+        const dataToWrite = [];
+    
+        let currentNode = this.head;
+        while (currentNode) {
+            dataToWrite.push([currentNode.data.key, currentNode.data.value]);
+            currentNode = currentNode.next;
+        }
+    
+        // Serialize the data and write it to the SSTable
+        sstable.insertBulk(dataToWrite);
+    
+        // Clear the memTable by resetting the head to null
+        this.head = null;
     }
 
     printList(){
@@ -72,6 +104,8 @@ class Data{
         this.data[this.key] = value;
     }
 }
+
+const sstable = new SSTable('my_sstable.txt');
 
 var list = new SkipList();
 var data0 = new Data("value0", 324)
