@@ -51,6 +51,12 @@ class SSTable {
     this.data = new Map(entries);
   }
 
+  /** 
+   * Compacts all data in SSTable. Data is flushed to SSTable as a set of 4 [k,v] pairs.
+   * Pairs within sets are ordered by value.
+   * These sets are then compacted into one file.
+   * Sets of [k,v] pairs are sorted newest to oldest.
+   */
   compact(){
     var serCountMinus = this.serCount - 1;
 
@@ -59,29 +65,15 @@ class SSTable {
 
     let newer = JSON.parse(newFileData);
     let old = JSON.parse(oldFileData);
-    
-    console.log(newer);
-    console.log(old);
-
-
-    //array.push(JSON.parse(newFileData));
-    //array.push(JSON.parse(oldFileData));
-
-    //var serializedData = "";
 
     for (const [key, value] of old) {
       newer.push([key, value]);
     }
 
-    console.log(newer);
-
     var serializedData = "";
     for(const [key, value] of newer){
       serializedData += JSON.stringify([key, value]);
     }
-
-    console.log(serializedData);
-    
     
     fs.writeFileSync(this.filename + this.serCount, serializedData, 'utf8');
   }
