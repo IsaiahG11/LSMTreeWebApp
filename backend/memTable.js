@@ -22,7 +22,7 @@ class SkipList{
         }else{
             return tmp;
         }
-        while(node.data.value > tmp.next.data.value){
+        while(node.getValue() > tmp.next.getValue()){
             if(tmpNext.next == null){
                 tmp = tmpNext;
                 break;
@@ -37,7 +37,7 @@ class SkipList{
     insertNode(node){
         if(this.head == null){
             this.head = node;
-        }else if(node.data.value < this.head.data.value){
+        }else if(node.getValue() < this.head.getValue()){
             node.next = this.head
             this.head = node;
         }else{
@@ -82,8 +82,10 @@ class SkipList{
 }
 
 class ListNode{
-    constructor(data){
-        this.data = data;
+    constructor(key, value){
+        this.key = key;
+        this.data = new Map();
+        this.data.set(key, value);
         this.next = null;
     }
 
@@ -94,42 +96,32 @@ class ListNode{
     getNext(){
         return this.next;
     }
-}
 
-class Data{
-    constructor(key, value){
-        this.key = key;
-        this.value = value;
-        this.data ={};
-        this.data[this.key] = value;
+    getValue(){
+        return this.data.get(this.key);
     }
 }
 
 const sstable = new SSTable('my_sstable.txt');
 
 var list = new SkipList();
-var data0 = new Data("value0", 324)
-var node0 = new ListNode(data0);
+var node0 = new ListNode("value0", 324);
 list.insertNode(node0);
 console.log("Added node0")
 
-var data1 = new Data("value1", 400);
-var node1 = new ListNode(data1);
+var node1 = new ListNode("value1", 400);
 list.insertNode(node1);
 console.log("Added node1")
 
-var data2 = new Data("value2", 123);
-var node2 = new ListNode(data2);
+var node2 = new ListNode("value2", 123);
 list.insertNode(node2);
 console.log("Added node2")
 
-var data3 = new Data("value3", 7);
-var node3 = new ListNode(data3);
+var node3 = new ListNode("value3", 7);
 list.insertNode(node3);
 console.log("Added node3")
 
-var data4 = new Data("value4", 1);
-var node4 = new ListNode(data4);
+var node4 = new ListNode("value4", 1);
 list.insertNode(node4);
 
 
