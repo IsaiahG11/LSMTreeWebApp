@@ -7,13 +7,14 @@
 const fs = require('fs'); // Import the 'fs' module
 const SSTable = require('./ssTable'); // Import the SSTable module
 
+// Define a simple skip list memtable class
 class SkipList{
     constructor(head = null){
         this.head = head;
-        this.memTableSize = 0; //Size of the list
+        this.memTableSize = 0; // Size of the list
     }
 
-
+    // Finds where the node needs to be inserted to keep ordering
     findInsertLocation(node){
         var tmp = this.head;
         var tmpNext = null;
@@ -34,6 +35,7 @@ class SkipList{
         return tmp;
     }
 
+    // Inserts the node into the memtable
     insertNode(node){
         if(this.head == null){
             this.head = node;
@@ -46,16 +48,17 @@ class SkipList{
             tmp.next = node;
         }
 
-        this.memTableSize++ //
+        this.memTableSize++
 
-        if(this.memTableSize > 3) { //
+        if(this.memTableSize > 3) {
             this.writeMemTableToSSTable(sstable);
             this.memTableSize = 0;
         }
         
     }
 
-    writeMemTableToSSTable(sstable) { //
+    // Saves the memtable to an sstable
+    writeMemTableToSSTable(sstable) {
         const dataToWrite = [];
     
         let currentNode = this.head;
@@ -71,6 +74,7 @@ class SkipList{
         this.head = null;
     }
 
+    // TESTING PURPOSES, to see what is in our memtable
     printList(){
         var tmp = this.head;
         console.log(tmp);
@@ -81,6 +85,7 @@ class SkipList{
     }
 }
 
+// Simple list node class that represents the memtable
 class ListNode{
     constructor(key, value){
         this.key = key;
@@ -103,6 +108,12 @@ class ListNode{
 }
 
 const sstable = new SSTable('my_sstable.txt');
+
+/**
+ * TESTING PURPOSES BELOW
+ */
+
+
 
 var list = new SkipList();
 var node0 = new ListNode("value0", 0);

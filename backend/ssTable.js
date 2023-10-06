@@ -1,7 +1,7 @@
 /**
  * @author Dylan Miller & Isaiah Hermance
  * @version October 2023
- * @class 
+ * @class A backend implementation of SSTables using compaction
  */
 
 const fs = require('fs');
@@ -20,8 +20,8 @@ class SSTable {
     this.data.set(key, value);
   }
 
+  // Insert a bulk of entries (A.K.A flushing from the memtable)
   insertBulk(entries) {
-
     for (const [key, value] of entries) {
         this.data.set(key, value);
     }
