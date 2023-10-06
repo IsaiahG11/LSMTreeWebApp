@@ -12,6 +12,8 @@ class SkipList{
     constructor(head = null){
         this.head = head;
         this.memTableSize = 0; // Size of the list
+
+        //this.ssTable = new SSTable('my_sstable.txt');
     }
 
     // Finds where the node needs to be inserted to keep ordering
@@ -68,10 +70,12 @@ class SkipList{
         }
     
         // Serialize the data and write it to the SSTable
+        console.log("\nFlushing memTable to SSTable\n")
         sstable.insertBulk(dataToWrite);
     
         // Clear the memTable by resetting the head to null
         this.head = null;
+        
     }
 
     // TESTING PURPOSES, to see what is in our memtable
@@ -109,42 +113,61 @@ class ListNode{
 
 const sstable = new SSTable('my_sstable.txt');
 
+//module.exports = SkipList;
+//module.exports = ListNode;
+
+
 /**
  * TESTING PURPOSES BELOW
  */
 
-
+console.log();
 
 var list = new SkipList();
 var node0 = new ListNode("value0", 0);
+console.log("Adding node0")
 list.insertNode(node0);
-console.log("Added node0")
+
 
 var node1 = new ListNode("value1", 1);
+console.log("Adding node1")
 list.insertNode(node1);
-console.log("Added node1")
+
 
 var node2 = new ListNode("value2", 2);
+console.log("Adding node2")
 list.insertNode(node2);
-console.log("Added node2")
+
 
 var node3 = new ListNode("value3", 3);
+console.log("Adding node3")
 list.insertNode(node3);
-console.log("Added node3")
+
 
 var node4 = new ListNode("value4", 4);
+console.log("Adding node4")
 list.insertNode(node4);
 
+
 var node5 = new ListNode("value5", 5);
+console.log("Adding node5")
 list.insertNode(node5);
 
+
 var node6 = new ListNode("value6", 6);
+console.log("Adding node6")
 list.insertNode(node6);
 
+
 var node7 = new ListNode("value7", 7);
+console.log("Adding node7")
 list.insertNode(node7);
 
+
 var node8 = new ListNode("value8", 8);
+console.log("Adding node8")
 list.insertNode(node8);
+
+console.log();
 
 list.printList();

@@ -58,6 +58,9 @@ class SSTable {
    * Sets of [k,v] pairs are sorted newest to oldest.
    */
   compact(){
+
+    console.log("Compacting SSTable\n")
+
     var serCountMinus = this.serCount - 1;
 
     const newFileData = fs.readFileSync(this.filename + this.serCount, 'utf8');
