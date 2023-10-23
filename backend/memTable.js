@@ -53,14 +53,14 @@ class SkipList{
         this.memTableSize++
 
         if(this.memTableSize > 3) {
-            this.writeMemTableToSSTable(sstable);
+            this.writeMemTableToSSTable();
             this.memTableSize = 0;
         }
         
     }
 
     // Saves the memtable to an sstable
-    writeMemTableToSSTable(sstable) {
+    writeMemTableToSSTable() {
         const dataToWrite = [];
     
         let currentNode = this.head;
@@ -112,6 +112,7 @@ class ListNode{
 }
 
 const sstable = new SSTable('my_sstable.txt');
+
 
 //module.exports = SkipList;
 //module.exports = ListNode;

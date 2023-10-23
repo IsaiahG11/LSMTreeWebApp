@@ -1,3 +1,8 @@
+/**
+ * @author Dylan Miller & Isaiah Hermance
+ * @version September 2023
+ * @class Loads collections from our MongoDB database
+ */
 
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
@@ -17,7 +22,7 @@ async function run() {
   // Name of the target database to read data
   const dbName = "transaction_logs";
   //Name of the target collection to read from
-  const collectionName = "log1";
+  const collectionName = "log4";
   // Create references to the database and collection in order to run
   // operations on them.
   const database = client.db(dbName);
@@ -26,7 +31,8 @@ async function run() {
   try {
     const cursor = await collection.find();
     await cursor.forEach(item => {
-      console.log(item);
+      //Should print all key value pairs from log4
+      console.log(item.data);
     });
     // add a linebreak
     console.log();
