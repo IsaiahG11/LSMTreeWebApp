@@ -4,6 +4,10 @@
  * @class Loads collections from our MongoDB database
  */
 
+
+const ListNode = require('./listNode'); //Import the ListNode module
+const MemTable = require('./memTable'); //Import the MemTable module
+
 const { MongoClient } = require("mongodb");
 const fs = require("fs");
 const path = require("path");
@@ -28,12 +32,29 @@ async function run() {
   const database = client.db(dbName);
   const collection = database.collection(collectionName);
 
+  var transactions = [];
   try {
     const cursor = await collection.find();
     await cursor.forEach(item => {
-      //Should print all key value pairs from log4
-      console.log(item.data);
+
+      transactions.push(item.data);
+
     });
+
+    var skipList = new MemTable();
+
+    for(i = 0; i < transactions.length; i++){
+
+      console.log("Adding node" + (i + 1));
+
+      var node = new ListNode(transactions[i].key, transactions[i].value);
+
+      skipList.insertNode(node);
+
+      console.log();
+
+    }
+
     // add a linebreak
     console.log();
   } catch (err) {

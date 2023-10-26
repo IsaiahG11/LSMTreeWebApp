@@ -26,7 +26,7 @@ class SSTable {
         this.data.set(key, value);
     }
     this.serialize();
-    }
+  }
 
   // Retrieve a value by key
   get(key) {

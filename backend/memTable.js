@@ -4,16 +4,15 @@
  * @class Basic implementation of a single layer skip list memtable
  */
 
-const fs = require('fs'); // Import the 'fs' module
 const SSTable = require('./ssTable'); // Import the SSTable module
 
 // Define a simple skip list memtable class
-class SkipList{
+class MemTable{
     constructor(head = null){
         this.head = head;
         this.memTableSize = 0; // Size of the list
 
-        //this.ssTable = new SSTable('my_sstable.txt');
+        this.ssTable = new SSTable('my_sstable.txt');
     }
 
     // Finds where the node needs to be inserted to keep ordering
@@ -70,8 +69,8 @@ class SkipList{
         }
     
         // Serialize the data and write it to the SSTable
-        console.log("\nFlushing memTable to SSTable\n")
-        sstable.insertBulk(dataToWrite);
+        console.log("\nFlushing memTable to SSTable")
+        this.ssTable.insertBulk(dataToWrite);
     
         // Clear the memTable by resetting the head to null
         this.head = null;
@@ -89,38 +88,11 @@ class SkipList{
     }
 }
 
-// Simple list node class that represents the memtable
-class ListNode{
-    constructor(key, value){
-        this.key = key;
-        this.data = new Map();
-        this.data.set(key, value);
-        this.next = null;
-    }
-
-    setNext(nextNode){
-        this.next = nextNode;
-    }
-
-    getNext(){
-        return this.next;
-    }
-
-    getValue(){
-        return this.data.get(this.key);
-    }
-}
-
-const sstable = new SSTable('my_sstable.txt');
-
-
-//module.exports = SkipList;
-//module.exports = ListNode;
+module.exports = MemTable; // Export the SkipList class
 
 
 /**
- * TESTING PURPOSES BELOW
- */
+ TESTING PURPOSES BELOW
 
 console.log();
 
@@ -172,3 +144,5 @@ list.insertNode(node8);
 console.log();
 
 list.printList();
+
+*/
