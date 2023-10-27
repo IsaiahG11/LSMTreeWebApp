@@ -56,7 +56,7 @@ class MemTable {
     // Serialize the memtable to an SSTable
     writeMemTableToSSTable() {
         const dataToWrite = this.layers[0].map((node) => [node.key, node.getValue()]);
-        console.log("\nFlushing memTable to SSTable");
+        console.log("\nFlushing memTable to SSTable\n");
         this.ssTable.insertBulk(dataToWrite);
     }
 
