@@ -92,7 +92,7 @@ class MemTable{
 module.exports = MemTable; // Export the SkipList class
 
 
-
+/**
 console.log();
 
 var list = new MemTable();
@@ -144,3 +144,4 @@ console.log();
 
 list.printList();
 
+*/

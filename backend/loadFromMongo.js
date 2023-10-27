@@ -55,6 +55,8 @@ async function run() {
 
     }
 
+    skipList.printList();
+
     // add a linebreak
     console.log();
   } catch (err) {
