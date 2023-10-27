@@ -59,21 +59,65 @@ class MemTable{
 
     findNodesBefore(node){
 
-
-
-
     }
 
     // Inserts the node into the memtable
     insertNode(node){
 
-        if(this.head == null){
-            this.head = node;
-        /**
+        var currNode = this.head;
+
+        var nodesBeforeInsert = [];
+
+
+        while(currNode != null){ //may need to change condition
+
+            if( currNode.next == null || node.getValue() < currNode.next.getValue()){
+
+                nodesBeforeInsert.unshift(currNode);
+                currNode = currNode.down;
+
+            }else{
+
+                currNode = currNode.next;
+                
+            }
+        }
+
+        var willPromote = true;
+
+        var downNode = null;
+
+        while(nodesBeforeInsert.length != 0 && willPromote){
+
+            currNode = nodesBeforeInsert.shift();
+
+            node.down = downNode;
+
+            node.next = currNode.next;
+
+            currNode.next = node;
+
+            willPromote = Math.random() < 0.5;
+
+            downNode = currNode;
+
+            node = node.copyNode();
+        }
+
+
+
+
+
+
+
+    /**
+
+        if(this.head.next == null){
+            this.head.next = node;
         }else if(node.getValue() < this.head.getValue()){
             node.next = this.head
             this.head = node;
-        */
+    
         }else{
             if(node.getValue() != this.head.getValue()){
 
@@ -94,6 +138,7 @@ class MemTable{
             this.writeMemTableToSSTable();
             this.memTableSize = 0;
         }
+        */
     }
 
     // Saves the memtable to an sstable
@@ -150,6 +195,8 @@ module.exports = MemTable; // Export the SkipList class
 
 
 var list = new MemTable();
+
+list.insertNode(new ListNode("key", 1));
 
 list.printLayers();
 

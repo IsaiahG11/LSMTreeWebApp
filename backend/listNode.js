@@ -5,8 +5,8 @@ class ListNode{
         this.data = new Map();
         this.data.set(key, value);
         this.next = null;
-        this.down = null;
         this.prev = null;
+        this.down = null;
     }
 
     setNext(nextNode){
@@ -19,6 +19,15 @@ class ListNode{
 
     getValue(){
         return this.data.get(this.key);
+    }
+
+    copyNode(){
+        var tmpNode = new ListNode(this.key, this.value);
+        tmpNode.next = this.next;
+        tmpNode.prev = this.prev;
+        tmpNode.down = this.down;
+
+        return tmpNode;
     }
 }
 
