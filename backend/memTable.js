@@ -5,6 +5,7 @@
  */
 
 const SSTable = require('./ssTable'); // Import the SSTable module
+const ListNode = require('./listNode'); // Import the SSTable module
 
 // Define a simple skip list memtable class
 class MemTable{
@@ -91,12 +92,10 @@ class MemTable{
 module.exports = MemTable; // Export the SkipList class
 
 
-/**
- TESTING PURPOSES BELOW
 
 console.log();
 
-var list = new SkipList();
+var list = new MemTable();
 var node0 = new ListNode("value0", 0);
 console.log("Adding node0")
 list.insertNode(node0);
@@ -145,4 +144,3 @@ console.log();
 
 list.printList();
 
-*/
