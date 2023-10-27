@@ -5,6 +5,8 @@ class ListNode{
         this.data = new Map();
         this.data.set(key, value);
         this.next = null;
+        this.down = null;
+        this.prev = null;
     }
 
     setNext(nextNode){

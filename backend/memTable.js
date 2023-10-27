@@ -7,19 +7,39 @@
 const SSTable = require('./ssTable'); // Import the SSTable module
 const ListNode = require('./listNode'); // Import the SSTable module
 
-// Define a simple skip list memtable class
+// Define a simple Skip List memtable class
 class MemTable{
     constructor(head = null){
         this.head = head;
         this.memTableSize = 0; // Size of the list
+        this.maxLayers = 3; //Max levels possible in SkipList
 
         this.ssTable = new SSTable('my_sstable.txt');
+
+        this.init();
+    }
+
+    //Initializes each layer with a negative bound. (All inserted values must be 0 or positive)
+    init(){
+
+        var negNode = new ListNode("negBound", -1);
+
+        this.head = negNode;
+
+        for(let i = 1; i < this.maxLayers; i++){
+
+            let nextNegNode = new ListNode("negBound", -1);
+            negNode.down = nextNegNode;
+            negNode = nextNegNode;
+
+        }
     }
 
     // Finds where the node needs to be inserted to keep ordering
     findInsertLocation(node){
         var tmp = this.head;
         var tmpNext = null;
+        var tmpPrev = null;
         if(tmp.next != null){
             tmpNext = tmp.next;
         }else{
@@ -37,15 +57,33 @@ class MemTable{
         return tmp;
     }
 
+    findNodesBefore(node){
+
+
+
+
+    }
+
     // Inserts the node into the memtable
     insertNode(node){
+
         if(this.head == null){
             this.head = node;
+        /**
         }else if(node.getValue() < this.head.getValue()){
             node.next = this.head
             this.head = node;
+        */
         }else{
-            var tmp = this.findInsertLocation(node);
+            if(node.getValue() != this.head.getValue()){
+
+                var nodesBeforeInsertNode = findNodesBefore(node);
+
+            }else{
+                console.log("duplicate values... cannot insert");
+                return; //throw error instead here.
+            }
+            var tmp = this.findNodeBefore(node);
             node.next = tmp.next;
             tmp.next = node;
         }
@@ -56,7 +94,6 @@ class MemTable{
             this.writeMemTableToSSTable();
             this.memTableSize = 0;
         }
-        
     }
 
     // Saves the memtable to an sstable
@@ -87,12 +124,37 @@ class MemTable{
             console.log(tmp);
         }
     }
+
+    printLayers(){
+        var layerString = "\n";
+        var node = this.head
+        while(node != null){
+            layerString += node.getValue();
+            let tmp = node;
+            while(tmp.next != null){
+                layerString += "  ---->  ";
+                tmp = tmp.next;
+                layerString += tmp.getValue();
+            }
+            node = node.down;
+            if(node != null){
+                layerString += "\n |        \n";
+            }
+        }
+        layerString += "\n";
+        console.log(layerString);
+    }
 }
 
 module.exports = MemTable; // Export the SkipList class
 
 
+var list = new MemTable();
 
+list.printLayers();
+
+
+/**
 console.log();
 
 var list = new MemTable();
@@ -143,4 +205,7 @@ list.insertNode(node8);
 console.log();
 
 list.printList();
+
+*/
+
 
