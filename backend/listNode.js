@@ -21,12 +21,12 @@ class ListNode{
         return this.data.get(this.key);
     }
 
-    copyNode(){
-        var tmpNode = new ListNode(this.key, this.value);
+    copyNode() {
+        let tmpNode = new ListNode(this.key, this.data.get(this.key));
         tmpNode.next = this.next;
         tmpNode.prev = this.prev;
         tmpNode.down = this.down;
-
+    
         return tmpNode;
     }
 }
