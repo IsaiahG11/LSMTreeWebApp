@@ -143,15 +143,17 @@ class MemTable{
     }
 
     // Search for a node by value
-search(value) {
+    search(value) {
     let currentNode = this.head;
     let searching = true;
+
     while (searching) {
         if (currentNode.data.has(currentNode.key) && currentNode.data.get(currentNode.key) === value) {
-            return currentNode;
+            return currentNode; // Found a matching node with the target value
         } else if (currentNode.next?.data.has(currentNode.next?.key) && currentNode.next?.data.get(currentNode.next?.key) <= value) {
             currentNode = currentNode.next;
         } else if (currentNode.down) {
+            // Move down if the next node's value is greater
             currentNode = currentNode.down;
         } else {
             searching = false;
@@ -217,11 +219,10 @@ module.exports = MemTable; // Export the SkipList class
 
 
 let list = new MemTable();
-
-list.insertNode(new ListNode("key", 1));
-list.insertNode(new ListNode("key", 4));
-list.insertNode(new ListNode("key", 2));
-list.insertNode(new ListNode("key", 5));
+list.insertNode(new ListNode("key1", 1));
+list.insertNode(new ListNode("key2", 4));
+list.insertNode(new ListNode("key3", 2));
+list.insertNode(new ListNode("key4", 5));
 list.printLayers();
 
 const foundNode = list.search(2);
@@ -239,6 +240,7 @@ if (foundAnothaNode) {
 } else {
     console.log("Node not found.");
 }
+
 
 
 
