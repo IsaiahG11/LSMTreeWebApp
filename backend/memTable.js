@@ -161,7 +161,7 @@ class MemTable{
     }
 
     return null; // Node with the given value not found
-}
+    }
 
 
     // Saves the memtable to an sstable
