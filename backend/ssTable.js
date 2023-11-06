@@ -57,29 +57,25 @@ class SSTable {
    * These sets are then compacted into one file.
    * Sets of [k,v] pairs are sorted newest to oldest.
    */
-  compact(){
-
-    console.log("Compacting SSTable\n")
-
-    var serCountMinus = this.serCount - 1;
-
+  compact() {
+    console.log("Compacting SSTable\n");
+  
+    const serCountMinus = this.serCount - 1;
+  
     const newFileData = fs.readFileSync(this.filename + this.serCount, 'utf8');
     const oldFileData = fs.readFileSync(this.filename + serCountMinus, 'utf8');
-
-    let newer = JSON.parse(newFileData);
-    let old = JSON.parse(oldFileData);
-
-    for (const [key, value] of old) {
-      newer.push([key, value]);
-    }
-
-    var serializedData = "";
-    for(const [key, value] of newer){
-      serializedData += JSON.stringify([key, value]);
-    }
-    
+  
+    const newer = new Map(JSON.parse(newFileData));
+    const old = new Map(JSON.parse(oldFileData));
+  
+    old.forEach((value, key) => {
+      newer.set(key, value);
+    });
+  
+    const serializedData = JSON.stringify(Array.from(newer.entries()));
     fs.writeFileSync(this.filename + this.serCount, serializedData, 'utf8');
   }
+  
 }
 
 module.exports = SSTable; // Export the SSTable class
