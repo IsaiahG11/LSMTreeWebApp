@@ -44,13 +44,6 @@ class SSTable {
     this.data.clear();
   }
 
-  // Deserialize the SSTable from a file
-  deserialize() {
-    const fileData = fs.readFileSync(this.filename + this.serCount, 'utf8');
-    const entries = JSON.parse(fileData);
-    this.data = new Map(entries);
-  }
-
   /** 
    * Compacts all data in SSTable. Data is flushed to SSTable as a set of 4 [k,v] pairs.
    * Pairs within sets are ordered by value.
@@ -74,8 +67,11 @@ class SSTable {
   
     const serializedData = JSON.stringify(Array.from(newer.entries()));
     fs.writeFileSync(this.filename + this.serCount, serializedData, 'utf8');
+
+    fs.rename(this.filename + serCountMinus, ("../backups/" + this.filename + serCountMinus), (err) => {
+      if (err) throw err;
+    });
   }
-  
 }
 
 module.exports = SSTable; // Export the SSTable class

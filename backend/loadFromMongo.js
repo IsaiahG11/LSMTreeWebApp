@@ -37,7 +37,7 @@ async function run() {
     const cursor = await collection.find();
     await cursor.forEach(item => {
 
-      transactions.push(item.data);
+      transactions.push([item.operation, item.data]);
 
     });
 
@@ -45,15 +45,27 @@ async function run() {
 
     for(i = 0; i < transactions.length; i++){
 
-      console.log("Adding node" + (i + 1));
+      switch(transactions[i][0]){
 
-      var node = new ListNode(transactions[i].key, transactions[i].value);
+        case "insert":
+          console.log("Adding node" + (i + 1));
+          var node = new ListNode(transactions[i][1].key, transactions[i][1].value);
+          skipList.insertNode(node);
+          console.log();
+          break;
+        
+        case "update":
+          
+          break;
 
-      skipList.insertNode(node);
+        case "delete":
 
-      console.log();
+          break;
+      }
 
     }
+
+    skipList.printLayers();
 
     // add a linebreak
     console.log();

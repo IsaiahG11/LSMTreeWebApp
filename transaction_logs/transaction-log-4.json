@@ -40,6 +40,41 @@
       "key": "Key6",
       "value": "7"
     }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "Key7",
+      "value": "123"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "Key8",
+      "value": "40"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "Key9",
+      "value": "72"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "Key10",
+      "value": "11"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "Key11",
+      "value": "31"
+    }
   }
   ]
   
