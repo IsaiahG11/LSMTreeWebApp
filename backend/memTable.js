@@ -84,40 +84,6 @@ class MemTable{
             this.writeMemTableToSSTable();
             this.memTableSize = 0;
         }
-
-
-
-
-    // TODO NOT CURRENTLY USED (can probably delete)
-    /**
-
-        if(this.head.next == null){
-            this.head.next = node;
-        }else if(node.getValue() < this.head.getValue()){
-            node.next = this.head
-            this.head = node;
-    
-        }else{
-            if(node.getValue() != this.head.getValue()){
-
-                var nodesBeforeInsertNode = findNodesBefore(node);
-
-            }else{
-                console.log("duplicate values... cannot insert");
-                return; //throw error instead here.
-            }
-            var tmp = this.findNodeBefore(node);
-            node.next = tmp.next;
-            tmp.next = node;
-        }
-
-        this.memTableSize++
-
-        if(this.memTableSize > 3) {
-            this.writeMemTableToSSTable();
-            this.memTableSize = 0;
-        }
-        */
     }
 
     // Search for a node by value
@@ -138,6 +104,7 @@ class MemTable{
         }
     }
 
+    //TODO searchSSTable()
     return null; // Node with the given value not found
     }
 
@@ -170,23 +137,6 @@ class MemTable{
     
         // Empty the current memtable
         this.clearMemTableLayers()
-        
-        /**
-        const dataToWrite = [];
-    
-        let currentNode = this.head;
-        while (currentNode) {
-            dataToWrite.push([currentNode.key, currentNode.getValue()]);
-            currentNode = currentNode.next;
-        }
-    
-        // Serialize the data and write it to the SSTable
-        console.log("\nFlushing memTable to SSTable")
-        this.ssTable.insertBulk(dataToWrite);
-    
-        // Clear the memTable by resetting the head to null
-        this.head = null;
-        */
     }
 
     //Helper Method to clear the MemTable after is has been flushed to an SSTable
@@ -242,23 +192,22 @@ class MemTable{
 module.exports = MemTable; // Export the SkipList class
 
 
-// let list = new MemTable();
-// list.insertNode(new ListNode("key1", 1));
-// list.insertNode(new ListNode("key2", 4));
-// list.insertNode(new ListNode("key3", 2));
-// list.insertNode(new ListNode("key4", 5));
-// list.insertNode(new ListNode("key5", 77));
-// list.insertNode(new ListNode("key6", 3));
-// list.insertNode(new ListNode("key7", 4));
-// list.insertNode(new ListNode("key8", 6));
-// list.insertNode(new ListNode("key9", 8));
-// list.insertNode(new ListNode("key10", 10));
-// list.insertNode(new ListNode("key11", 9));
-// list.insertNode(new ListNode("key12", 12));
-// list.insertNode(new ListNode("key13", 120));
-// list.printLayers();
+let list = new MemTable();
+list.insertNode(new ListNode("key1", 1));
+list.insertNode(new ListNode("key2", 4));
+list.insertNode(new ListNode("key3", 2));
+list.insertNode(new ListNode("key4", 5));
+list.insertNode(new ListNode("key5", 77));
+list.insertNode(new ListNode("key6", 3));
+list.insertNode(new ListNode("key7", 4));
+list.insertNode(new ListNode("key8", 6));
+list.insertNode(new ListNode("key9", 8));
+list.insertNode(new ListNode("key10", 10));
+list.insertNode(new ListNode("key11", 9));
+list.insertNode(new ListNode("key12", 12));
+list.insertNode(new ListNode("key13", 120));
 
-// const foundNode = list.search(2);
+// const foundNode = list.search(120);
 
 // if (foundNode) {
 //     console.log("Found node:", foundNode.getValue());
