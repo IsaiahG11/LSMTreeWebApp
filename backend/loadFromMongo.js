@@ -32,7 +32,7 @@ async function run() {
   const database = client.db(dbName);
   const collection = database.collection(collectionName);
 
-  var transactions = [];
+  let transactions = [];
   try {
     const cursor = await collection.find();
     await cursor.forEach(item => {
@@ -41,9 +41,9 @@ async function run() {
 
     });
 
-    var skipList = new MemTable();
+    let skipList = new MemTable();
 
-    for(i = 0; i < transactions.length; i++){
+    for(let i = 0; i < transactions.length; i++){
 
       switch(transactions[i][0]){
 
