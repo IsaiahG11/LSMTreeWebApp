@@ -86,7 +86,6 @@ class MemTable{
             this.writeMemTableToSSTable();
             this.memTableSize = 0;
         }
-        */
     }
 
     // Search for a node by value

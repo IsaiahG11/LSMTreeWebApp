@@ -49,7 +49,7 @@ async function run() {
 
         case "insert":
           console.log("Adding node" + (i + 1));
-          var node = new ListNode(transactions[i][1].key, transactions[i][1].value);
+          var node = new ListNode(transactions[i][1].key, parseInt(transactions[i][1].value));
           skipList.insertNode(node);
           console.log();
           break;
