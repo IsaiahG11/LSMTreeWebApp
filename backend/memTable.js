@@ -37,14 +37,24 @@ class MemTable{
         }
     }
 
-    // Inserts the node into the memtable
+    /**
+     * Inserts a listNode node into the memtable. It starts at the top level of the skipList and
+     * searches right (next) and down until it finds a node with a greater value, inserts node directly before
+     * 
+     * Node is inserted at the bottom layer of the list and then there is a 50 / 50 chance that node is 
+     * added to each layer above. It cannot be added to a layer if it is not already in the layer directly below it.
+     * 
+     * If the number of nodes in this memTable exceed the set maxNodes, they are flushed to the SSTable and memTable is cleared
+     * 
+     * @param {listNode} node Node to insert into the Memtable
+     */
     insertNode(node){
 
         let currNode = this.head;
 
         let nodesBeforeInsert = [];
 
-        // 
+        //Finds node to insert directly before
         while(currNode != null){
 
             if( currNode.next == null || node.getValue() < currNode.next.getValue()){
@@ -65,6 +75,7 @@ class MemTable{
         // Reference to the node below current
         let downNode = null;
 
+        //Uses randomizer and checks if node should be added to next level up.
         while(nodesBeforeInsert.length != 0 && willPromote){
 
             currNode = nodesBeforeInsert.shift();
@@ -82,8 +93,10 @@ class MemTable{
             node = node.copyNode();
         }
 
+        //increments size of memTable
         this.memTableSize++
 
+        //Flushes to SSTable and clears memTable if size > maxNodes
         if(this.memTableSize > this.maxNodes) {
             this.writeMemTableToSSTable();
             this.memTableSize = 0;
