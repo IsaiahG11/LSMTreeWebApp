@@ -44,8 +44,8 @@ class MemTable{
 
         let nodesBeforeInsert = [];
 
-
-        while(currNode != null){ //may need to change condition
+        // 
+        while(currNode != null){
 
             if( currNode.next == null || node.getValue() < currNode.next.getValue()){
 
@@ -59,8 +59,10 @@ class MemTable{
             }
         }
 
+        // Used for promoting a node to the next layer
         let willPromote = true;
 
+        // Reference to the node below current
         let downNode = null;
 
         while(nodesBeforeInsert.length != 0 && willPromote){
@@ -94,9 +96,9 @@ class MemTable{
     let searching = true;
 
     while (searching) {
-        if (currentNode.data.has(currentNode.key) && currentNode.data.get(currentNode.key) === value) {
+        if (currentNode.data.get(currentNode.key) === value) {
             return currentNode; // Found a matching node with the target value
-        } else if (currentNode.next?.data.has(currentNode.next?.key) && currentNode.next?.data.get(currentNode.next?.key) <= value) {
+        } else if (currentNode.next?.data.get(currentNode.next?.key) <= value) {  //
             currentNode = currentNode.next;
         } else if (currentNode.down) {
             // Move down if the next node's value is greater
