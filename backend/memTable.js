@@ -11,7 +11,7 @@ const ListNode = require('./listNode'); // Import the SSTable module
 class MemTable{
 
     constructor(head = null){
-        this.maxNodes = 15;
+        this.maxNodes = 4;
         this.head = head;
         this.memTableSize = 0; // Size of the list
         this.maxLayers = 3; //Max levels possible in SkipList
@@ -125,6 +125,7 @@ class MemTable{
     return null; // Node with the given value not found
     }
 
+    //TODO Update
 
     // Saves the memtable to an sstable
     writeMemTableToSSTable() {
@@ -208,53 +209,38 @@ class MemTable{
 
 module.exports = MemTable; // Export the SkipList class
 
-/**
+
 let list = new MemTable();
 list.insertNode(new ListNode("key1", 1));
+list.insertNode(new ListNode("key1", '*'));
 list.insertNode(new ListNode("key2", 4));
 list.insertNode(new ListNode("key3", 2));
 list.insertNode(new ListNode("key4", 5));
 list.insertNode(new ListNode("key5", 77));
+
 list.insertNode(new ListNode("key6", 3));
 list.insertNode(new ListNode("key7", 4));
 list.insertNode(new ListNode("key8", 6));
 list.insertNode(new ListNode("key9", 8));
+
 list.insertNode(new ListNode("key10", 10));
 list.insertNode(new ListNode("key11", 9));
 list.insertNode(new ListNode("key12", 12));
 list.insertNode(new ListNode("key13", 120));
 list.printLayers();
 
-
-// let list = new MemTable();
-// list.insertNode(new ListNode("key1", 1));
-// list.insertNode(new ListNode("key2", 4));
-// list.insertNode(new ListNode("key3", 2));
-// list.insertNode(new ListNode("key4", 5));
-// list.insertNode(new ListNode("key5", 77));
-// list.insertNode(new ListNode("key6", 3));
-// list.insertNode(new ListNode("key7", 4));
-// list.insertNode(new ListNode("key8", 6));
-// list.insertNode(new ListNode("key9", 8));
-// list.insertNode(new ListNode("key10", 10));
-// list.insertNode(new ListNode("key11", 9));
-// list.insertNode(new ListNode("key12", 12));
-// list.insertNode(new ListNode("key13", 120));
-// list.printLayers();
-
 // const foundNode = list.search(2);
 
-if (foundNode) {
-    console.log("Found node:", foundNode.getValue());
-} else {
-    console.log("Node not found.");
-}
+// if (foundNode) {
+//     console.log("Found node:", foundNode.getValue());
+// } else {
+//     console.log("Node not found.");
+// }
 
-const foundAnothaNode = list.search(5);
+// const foundAnothaNode = list.search(5);
 
-if (foundAnothaNode) {
-    console.log("Found node:", foundAnothaNode.getValue());
-} else {
-    console.log("Node not found.");
-}
-*/
+// if (foundAnothaNode) {
+//     console.log("Found node:", foundAnothaNode.getValue());
+// } else {
+//     console.log("Node not found.");
+// }

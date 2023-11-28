@@ -50,7 +50,7 @@ async function run() {
         //Checks the type of transaction and calls operations on the memTable accordingly
         case "insert":
           console.log("Adding node" + (i + 1));
-          var node = new ListNode(transactions[i][1].key, parseInt(transactions[i][1].value));
+          let node = new ListNode(transactions[i][1].key, parseInt(transactions[i][1].value));
           skipList.insertNode(node);
           console.log();
           break;

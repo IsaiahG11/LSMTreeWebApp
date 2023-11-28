@@ -28,9 +28,21 @@ class SSTable {
     this.serialize();
   }
 
-  // Retrieve a value by key
+  //TODO Search
+  //TODO Update
+  
+  // Mark a key as deleted with a tombstone
+  delete(key) {
+    this.data.set(key, '*'); // Using null as the tombstone marker
+  }
+
+  // Retrieve a value by key with tombstones handled
   get(key) {
-    return this.data.get(key);
+    const value = this.data.get(key);
+    if (value === '*') { // Check for tombstone
+      return null; // Or indicate that the key is deleted
+    }
+    return value;
   }
 
   // Serialize the SSTable to a file
@@ -52,25 +64,34 @@ class SSTable {
    */
   compact() {
     console.log("Compacting SSTable\n");
-  
+
     const serCountMinus = this.serCount - 1;
-  
+
     const newFileData = fs.readFileSync(this.filename + this.serCount, 'utf8');
     const oldFileData = fs.readFileSync(this.filename + serCountMinus, 'utf8');
-  
+
     const newer = new Map(JSON.parse(newFileData));
     const old = new Map(JSON.parse(oldFileData));
-  
-    old.forEach((value, key) => {
-      newer.set(key, value);
-    });
-  
-    const serializedData = JSON.stringify(Array.from(newer.entries()));
-    fs.writeFileSync(this.filename + this.serCount, serializedData, 'utf8');
 
-    fs.rename(this.filename + serCountMinus, ("../backups/" + this.filename + serCountMinus), (err) => {
-      if (err) throw err;
+    // Merge and exclude tombstoned entries
+    old.forEach((value, key) => {
+      if (newer.has(key) && newer.get(key) === '*') {
+        newer.delete(key); // Remove tombstoned keys
+      } else if (value !== '*') {
+        newer.set(key, value);
+      }
     });
+
+    // Serialize the merged data excluding tombstoned keys
+    const serializedData = JSON.stringify(Array.from(newer.entries()));
+    fs.writeFileSync(this.filename + (this.serCount+1), serializedData, 'utf8');
+
+    // Move the old file to backups
+    fs.rename(this.filename + serCountMinus, ("../backups/" + this.filename + serCountMinus), (err) => {
+        if (err) throw err;
+    });
+    // Delete the old SSTable file
+    //fs.unlinkSync(this.filename + serCountMinus);
   }
 }
 
