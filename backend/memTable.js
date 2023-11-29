@@ -125,6 +125,11 @@ class MemTable{
     return null; // Node with the given value not found
     }
 
+    deleteNode(key) {
+        var nodeToDelete = new ListNode(key, '*');
+        this.insertNode(nodeToDelete);
+    }
+
     //TODO Update
 
     // Saves the memtable to an sstable
@@ -212,7 +217,7 @@ module.exports = MemTable; // Export the SkipList class
 
 let list = new MemTable();
 list.insertNode(new ListNode("key1", 1));
-list.insertNode(new ListNode("key1", '*'));
+list.deleteNode("key1");
 list.insertNode(new ListNode("key2", 4));
 list.insertNode(new ListNode("key3", 2));
 list.insertNode(new ListNode("key4", 5));
