@@ -45,6 +45,17 @@ class SSTable {
     return value;
   }
 
+  search(lookupValue) {
+    const ssTableFile = fs.readFileSync(this.filename + this.serCount, 'utf8');
+    var data = new Map(JSON.parse(ssTableFile));
+    data.forEach((value, key) => {
+      if (value === lookupValue){
+        return [key, value];
+      }
+    });
+    return null;
+  }
+
   // Serialize the SSTable to a file
   serialize() {
     const serializedData = JSON.stringify(Array.from(this.data.entries()));
@@ -70,7 +81,7 @@ class SSTable {
     const newFileData = fs.readFileSync(this.filename + this.serCount, 'utf8');
     const oldFileData = fs.readFileSync(this.filename + serCountMinus, 'utf8');
 
-    const newer = new Map(JSON.parse(newFileData));
+    
     const old = new Map(JSON.parse(oldFileData));
 
     // Merge and exclude tombstoned entries

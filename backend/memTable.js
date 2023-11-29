@@ -122,7 +122,8 @@ class MemTable{
     }
 
     //TODO searchSSTable()
-    return null; // Node with the given value not found
+    console.log("Node not found in memTable, searching SSTable");
+    return this.ssTable.search(value); // Node with the given value not found
     }
 
     deleteNode(key) {
