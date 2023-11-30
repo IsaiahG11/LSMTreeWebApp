@@ -92,6 +92,7 @@ class SSTable {
     });
     // Delete the old SSTable file
     //fs.unlinkSync(this.filename + serCountMinus);
+    this.serCount++;
   }
 }
 

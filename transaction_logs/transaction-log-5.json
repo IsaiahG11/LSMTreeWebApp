@@ -1,0 +1,106 @@
+[
+  {
+    "operation": "insert",
+    "data": {
+      "key": "key1",
+      "value": "1"
+    }
+  },
+  {
+    "operation": "delete",
+    "data": {
+      "key": "key1"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "key2",
+      "value": "4"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "key3",
+      "value": "2"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "key4",
+      "value": "5"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "key5",
+      "value": "77"
+    }
+  },
+  {
+    "operation": "update",
+    "data": {
+      "key": "key6",
+      "value": "3"
+    }
+  },
+  {
+    "operation": "update",
+    "data": {
+      "key": "key4",
+      "value": "1414"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "key7",
+      "value": "4"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "key8",
+      "value": "6"
+    }
+  },
+  {
+    "operation": "update",
+    "data": {
+      "key": "key4",
+      "value": "88"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "key9",
+      "value": "8"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "key10",
+      "value": "10"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "key11",
+      "value": "9"
+    }
+  },
+  {
+    "operation": "delete",
+    "data": {
+      "key": "key5"
+    }
+  }
+]
+  

@@ -126,11 +126,16 @@ class MemTable{
     }
 
     deleteNode(key) {
-        var nodeToDelete = new ListNode(key, '*');
+        let nodeToDelete = new ListNode(key, '*');
         this.insertNode(nodeToDelete);
     }
 
-    //TODO Update
+    //Update
+    updateNode(key, newValue) {
+        let node = new ListNode(key, newValue);
+        console.log("Updated Node: " + node.key + " " + newValue);
+        this.insertNode(node); // Reuse the insert logic for updates
+    }
 
     // Saves the memtable to an sstable
     writeMemTableToSSTable() {
@@ -215,24 +220,26 @@ class MemTable{
 module.exports = MemTable; // Export the SkipList class
 
 
-let list = new MemTable();
-list.insertNode(new ListNode("key1", 1));
-list.deleteNode("key1");
-list.insertNode(new ListNode("key2", 4));
-list.insertNode(new ListNode("key3", 2));
-list.insertNode(new ListNode("key4", 5));
-list.insertNode(new ListNode("key5", 77));
+// let list = new MemTable();
+// list.insertNode(new ListNode("key1", 1));
+// list.deleteNode("key1");
+// list.insertNode(new ListNode("key2", 4));
+// list.insertNode(new ListNode("key3", 2));
+// list.insertNode(new ListNode("key4", 5));
+// list.insertNode(new ListNode("key5", 77));
 
-list.insertNode(new ListNode("key6", 3));
-list.insertNode(new ListNode("key7", 4));
-list.insertNode(new ListNode("key8", 6));
-list.insertNode(new ListNode("key9", 8));
+// list.insertNode(new ListNode("key6", 3));
+// list.insertNode(new ListNode("key4", 1414));
+// list.insertNode(new ListNode("key7", 4));
+// list.insertNode(new ListNode("key8", 6));
+// list.insertNode(new ListNode("key4", 88));
+// list.insertNode(new ListNode("key9", 8));
 
-list.insertNode(new ListNode("key10", 10));
-list.insertNode(new ListNode("key11", 9));
-list.insertNode(new ListNode("key12", 12));
-list.insertNode(new ListNode("key13", 120));
-list.printLayers();
+// list.insertNode(new ListNode("key10", 10));
+// list.insertNode(new ListNode("key11", 9));
+// list.insertNode(new ListNode("key12", 12));
+// list.insertNode(new ListNode("key13", 120));
+// list.printLayers();
 
 // const foundNode = list.search(2);
 

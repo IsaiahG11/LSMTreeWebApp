@@ -26,7 +26,7 @@ async function run() {
   // Name of the target database to read data
   const dbName = "transaction_logs";
   //Name of the target collection to read from
-  const collectionName = "log4";
+  const collectionName = "log1";
   // Create references to the database and collection in order to run
   // operations on them.
   const database = client.db(dbName);
@@ -50,17 +50,19 @@ async function run() {
         //Checks the type of transaction and calls operations on the memTable accordingly
         case "insert":
           console.log("Adding node" + (i + 1));
-          let node = new ListNode(transactions[i][1].key, parseInt(transactions[i][1].value));
-          skipList.insertNode(node);
+          let nodeToInsert = new ListNode(transactions[i][1].key, parseInt(transactions[i][1].value));
+          skipList.insertNode(nodeToInsert);
           console.log();
           break;
         
         case "update":
-          
+          console.log("Updating node with key " + transactions[i][1].key);
+          skipList.updateNode(transactions[i][1].key, parseInt(transactions[i][1].value));
           break;
-
+      
         case "delete":
-
+          console.log("Deleting node with key " + transactions[i][1].key);
+          skipList.deleteNode(transactions[i][1].key);
           break;
       }
 
