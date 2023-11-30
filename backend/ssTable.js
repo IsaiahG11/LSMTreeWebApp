@@ -45,6 +45,17 @@ class SSTable {
     return value;
   }
 
+  search(lookupValue) {
+    const ssTableFile = fs.readFileSync(this.filename + this.serCount, 'utf8');
+    let data = new Map(JSON.parse(ssTableFile));
+    data.forEach((value, key) => {
+      if (value === lookupValue){
+        return [key, value];
+      }
+    });
+    return null;
+  }
+
   // Serialize the SSTable to a file
   serialize() {
     const serializedData = JSON.stringify(Array.from(this.data.entries()));
@@ -90,8 +101,10 @@ class SSTable {
     fs.rename(this.filename + serCountMinus, ("../backups/" + this.filename + serCountMinus), (err) => {
         if (err) throw err;
     });
-    // Delete the old SSTable file
-    //fs.unlinkSync(this.filename + serCountMinus);
+
+    fs.rename(this.filename + this.serCount, ("../backups/" + this.filename + this.serCount), (err) => {
+      if (err) throw err;
+    });
     this.serCount++;
   }
 }

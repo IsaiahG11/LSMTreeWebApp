@@ -101,6 +101,7 @@ class MemTable{
             this.writeMemTableToSSTable();
             this.memTableSize = 0;
         }
+        this.printLayers();
     }
 
     // Search for a node by value
@@ -121,8 +122,8 @@ class MemTable{
         }
     }
 
-    //TODO searchSSTable()
-    return null; // Node with the given value not found
+    console.log("Node not found in memTable, searching SSTable");
+    return this.ssTable.search(value);
     }
 
     deleteNode(key) {
@@ -152,8 +153,6 @@ class MemTable{
             else if(currentNode.next !=null){
                 currentNode = currentNode.next
                 dataToWrite.push([currentNode.key, currentNode.getValue()]);
-                console.log(dataToWrite);
-                console.log();
             }
             else{
                 searching = false;
