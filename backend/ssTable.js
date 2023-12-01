@@ -88,10 +88,12 @@ class SSTable {
 
     // Merge and exclude tombstoned entries
     old.forEach((value, key) => {
-      if (newer.has(key) && newer.get(key) === '*') {
+      if (newer.has(key) && newer.get(key) === '*') { // deletion
         newer.delete(key); // Remove tombstoned keys
-      } else if (newer.has(key) && value !== '*') {
+      } else if (newer.has(key) && value !== '*') { // updates
         newer.set(key, newer.get(key));
+      } else if (value !== '*') {
+        newer.set(key, value); // normal insertion / compaction
       }
     });
 
