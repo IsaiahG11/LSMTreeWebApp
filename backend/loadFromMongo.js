@@ -26,7 +26,7 @@ async function run() {
   // Name of the target database to read data
   const dbName = "transaction_logs";
   //Name of the target collection to read from
-  const collectionName = "log1";
+  const collectionName = "log5";
   // Create references to the database and collection in order to run
   // operations on them.
   const database = client.db(dbName);

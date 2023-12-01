@@ -123,9 +123,11 @@ class MemTable{
     }
 
     console.log("Node not found in memTable, searching SSTable");
-    return this.ssTable.search(value);
+    var foundNode = this.ssTable.search(value);
+    return foundNode;
     }
 
+    //TODO: look for in memTable first and remove if there, otherwise add tombstone.
     deleteNode(key) {
         let nodeToDelete = new ListNode(key, '*');
         this.insertNode(nodeToDelete);
@@ -238,9 +240,11 @@ module.exports = MemTable; // Export the SkipList class
 // list.insertNode(new ListNode("key11", 9));
 // list.insertNode(new ListNode("key12", 12));
 // list.insertNode(new ListNode("key13", 120));
+
 // list.printLayers();
 
-// const foundNode = list.search(2);
+// console.log(list.search(2));
+
 
 // if (foundNode) {
 //     console.log("Found node:", foundNode.getValue());

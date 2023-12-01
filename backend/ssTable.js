@@ -46,14 +46,16 @@ class SSTable {
   }
 
   search(lookupValue) {
-    const ssTableFile = fs.readFileSync(this.filename + this.serCount, 'utf8');
+    const ssTableFile = fs.readFileSync(this.filename + (this.serCount - 1), 'utf8');
     let data = new Map(JSON.parse(ssTableFile));
-    data.forEach((value, key) => {
-      if (value === lookupValue){
-        return [key, value];
+    var foundNode = null;
+    data.forEach((value, key) => { 
+      if (value === lookupValue){ // TODO: check fot a tombstone here
+        foundNode = [key, value];
+        return;
       }
     });
-    return null;
+    return foundNode;
   }
 
   // Serialize the SSTable to a file
@@ -88,8 +90,8 @@ class SSTable {
     old.forEach((value, key) => {
       if (newer.has(key) && newer.get(key) === '*') {
         newer.delete(key); // Remove tombstoned keys
-      } else if (value !== '*') {
-        newer.set(key, value);
+      } else if (newer.has(key) && value !== '*') {
+        newer.set(key, newer.get(key));
       }
     });
 
