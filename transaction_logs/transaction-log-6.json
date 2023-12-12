@@ -1,0 +1,63 @@
+[
+  {
+    "operation": "insert",
+    "data": {
+      "key": "1",
+      "value": "1"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "2",
+      "value": "7"
+    }
+  },
+  {
+    "operation": "update",
+    "data": {
+      "key": "2",
+      "value": "5"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "4",
+      "value": "10"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "5",
+      "value": "3"
+    }
+  },
+  {
+    "operation": "update",
+    "data": {
+      "key": "5",
+      "value": "99"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "6",
+      "value": "2"
+    }
+  },
+  {
+    "operation": "delete",
+    "data": {
+      "key": "1"
+    }
+  },
+  {
+    "operation": "search",
+    "data": {
+      "key": "7"
+    }
+  }
+]
