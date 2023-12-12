@@ -2,105 +2,56 @@
   {
     "operation": "insert",
     "data": {
-      "key": "key1",
+      "key": "1",
       "value": "1"
     }
   },
   {
-    "operation": "delete",
+    "operation": "insert",
     "data": {
-      "key": "key1"
+      "key": "2",
+      "value": "7"
     }
   },
   {
-    "operation": "insert",
+    "operation": "update",
     "data": {
-      "key": "key2",
-      "value": "4"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "key3",
-      "value": "2"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "key4",
+      "key": "2",
       "value": "5"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "key5",
-      "value": "77"
-    }
-  },
-  {
-    "operation": "update",
-    "data": {
-      "key": "key6",
-      "value": "3"
-    }
-  },
-  {
-    "operation": "update",
-    "data": {
-      "key": "key4",
-      "value": "1414"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "key7",
-      "value": "4"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "key8",
-      "value": "6"
-    }
-  },
-  {
-    "operation": "update",
-    "data": {
-      "key": "key4",
-      "value": "88"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "key9",
-      "value": "8"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "key10",
+      "key": "4",
       "value": "10"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "key11",
-      "value": "9"
+      "key": "5",
+      "value": "3"
+    }
+  },
+  {
+    "operation": "update",
+    "data": {
+      "key": "5",
+      "value": "99"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "6",
+      "value": "2"
     }
   },
   {
     "operation": "delete",
     "data": {
-      "key": "key5"
+      "key": "1"
     }
   }
 ]
-  

@@ -11,7 +11,7 @@ const ListNode = require('./listNode'); // Import the SSTable module
 class MemTable{
 
     constructor(head = null){
-        this.maxNodes = 4;
+        this.maxNodes = 3;
         this.head = head;
         this.memTableSize = 0; // Size of the list
         this.maxLayers = 3; //Max levels possible in SkipList
@@ -136,7 +136,7 @@ class MemTable{
     //Update
     updateNode(key, newValue) {
         let node = new ListNode(key, newValue);
-        console.log("Updated Node: " + node.key + " " + newValue);
+        console.log("Updated Node: '" + node.key + "': " + newValue);
         this.insertNode(node); // Reuse the insert logic for updates
     }
 

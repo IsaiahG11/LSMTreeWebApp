@@ -2,79 +2,56 @@
   {
     "operation": "insert",
     "data": {
-      "key": "Key1",
-      "value": "213"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "Key2",
-      "value": "13"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "Key3",
+      "key": "1",
       "value": "1"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "Key4",
-      "value": "132"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "Key5",
-      "value": "133"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "Key6",
+      "key": "2",
       "value": "7"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "Key7",
-      "value": "123"
+      "key": "3",
+      "value": "5"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "Key8",
-      "value": "40"
+      "key": "4",
+      "value": "10"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "Key9",
-      "value": "72"
+      "key": "5",
+      "value": "3"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "Key10",
+      "key": "6",
+      "value": "2"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "7",
       "value": "11"
     }
   },
   {
-    "operation": "insert",
+    "operation": "delete",
     "data": {
-      "key": "Key11",
-      "value": "31"
+      "key": "1"
     }
   }
-  ]
-  
+]

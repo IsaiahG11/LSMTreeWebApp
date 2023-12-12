@@ -2,70 +2,29 @@
   {
     "operation": "insert",
     "data": {
-      "key": "A",
-      "value": "ValueA"
+      "key": "1",
+      "value": "1"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "B",
-      "value": "ValueB"
+      "key": "2",
+      "value": "7"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "C",
-      "value": "ValueC"
-    }
-  },
-  {
-    "operation": "delete",
-    "data": {
-      "key": "B"
-    }
-  },
-  {
-    "operation": "update",
-    "data": {
-      "key": "A",
-      "new_value": "UpdatedValueA"
+      "key": "3",
+      "value": "5"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "D",
-      "value": "ValueD"
+      "key": "4",
+      "value": "10"
     }
-  },
-  {
-    "operation": "update",
-    "data": {
-      "key": "C",
-      "new_value": "UpdatedValueC"
-    }
-  },
-  {
-    "operation": "delete",
-    "data": {
-      "key": "D"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "E",
-      "value": "ValueE"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "F",
-      "value": "ValueF"
-    }
-  }  
-  ]
-  
+  }
+]
