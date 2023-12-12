@@ -64,6 +64,10 @@ async function run() {
           console.log("Deleting node with key " + transactions[i][1].key);
           skipList.deleteNode(transactions[i][1].key);
           break;
+        case "search":
+          console.log("Searching for node with value " + transactions[i][1].key);
+          skipList.search(transactions[i][1].key);
+          break;
       }
 
     }

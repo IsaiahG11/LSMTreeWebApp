@@ -124,7 +124,7 @@ class MemTable{
 
     console.log("Node not found in memTable, searching SSTable");
     var foundNode = this.ssTable.search(value);
-    return foundNode;
+    console.log(foundNode);
     }
 
     //TODO: look for in memTable first and remove if there, otherwise add tombstone.

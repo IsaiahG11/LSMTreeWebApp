@@ -49,10 +49,9 @@ class SSTable {
     const ssTableFile = fs.readFileSync(this.filename + (this.serCount - 1), 'utf8');
     let data = new Map(JSON.parse(ssTableFile));
     var foundNode = null;
-    data.forEach((value, key) => { 
-      if (value === lookupValue){ // TODO: check fot a tombstone here
+    data.forEach((value, key) => {
+      if (value == lookupValue){ // TODO: check fot a tombstone here
         foundNode = [key, value];
-        return;
       }
     });
     return foundNode;
