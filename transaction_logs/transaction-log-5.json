@@ -53,5 +53,11 @@
     "data": {
       "key": "1"
     }
+  },
+  {
+    "operation": "search",
+    "data": {
+      "key": "7"
+    }
   }
 ]
