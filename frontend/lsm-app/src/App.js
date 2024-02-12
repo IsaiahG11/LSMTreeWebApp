@@ -12,8 +12,7 @@ import Simulation from './components/Simulation';
 
 function App() {
   return (
-    <>
-        <BrowserRouter>
+    <BrowserRouter>
           <Routes>
             <Route
               path = "/"
@@ -36,7 +35,6 @@ function App() {
             />
           </Routes>
         </BrowserRouter>
-    </>
   );
 }
 
