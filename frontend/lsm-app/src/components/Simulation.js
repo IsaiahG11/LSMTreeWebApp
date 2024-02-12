@@ -9,9 +9,9 @@ const Simulation = () => {
         <h1>
           This is the Simulation page
         </h1>
-        <body>
+        <div>
           <p>This is a text massage.</p>
-        </body>
+        </div>
     </>
   );
 };

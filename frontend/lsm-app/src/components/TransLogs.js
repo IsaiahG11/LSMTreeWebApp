@@ -6,12 +6,10 @@ const TransLogs = () => {
 
   return (
     <>
-        <h1>
-          This is the Transaction Logs page
-        </h1>
-        <body>
+        <h1>This is the Transaction Logs page</h1>
+        <div>
           <p>This text is text.</p>
-        </body>
+        </div>
     </>
   );
 };

@@ -9,9 +9,9 @@ const Components = () => {
         <h1>
           This is the Components page
         </h1>
-        <body>
+        <div>
           <p>This is a text.</p>
-        </body>
+        </div>
     </>
   );
 };
