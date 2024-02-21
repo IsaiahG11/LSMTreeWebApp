@@ -1,0 +1,28 @@
+[
+    {
+      "operation": "insert",
+      "data": {
+        "key": "1",
+        "value": "1"
+      }
+    },
+    {
+      "operation": "update",
+      "data": {
+        "key": "1",
+        "value": "8"
+      }
+    },
+    {
+        "operation": "search",
+        "data": {
+          "key": "7"
+        }
+    },
+    {
+      "operation": "delete",
+      "data": {
+        "key": "1"
+      }
+    }
+  ]

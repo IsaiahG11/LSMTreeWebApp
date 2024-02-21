@@ -6,12 +6,27 @@ const Components = () => {
 
   return (
     <>
-        <h1>
-          This is the Components page
-        </h1>
-        <div>
-          <p>This is a text.</p>
-        </div>
+      <h1>Welcome to the Landing Page</h1>
+
+      {/* Button for returning to root */}
+      <button onClick={() => navigate("/")}>
+        Main Menu
+      </button>
+
+      {/* Button for Memtable */}
+      <button onClick={() => navigate("/components/memtable")}>
+        Memtable
+      </button>
+
+      {/* Button for SSTable */}
+      <button onClick={() => navigate("/components/sstable")}>
+        SSTable
+      </button>
+
+      {/* Button for Compaction */}
+      <button onClick={() => navigate("/components/compaction")}>
+        Compaction
+      </button>
     </>
   );
 };

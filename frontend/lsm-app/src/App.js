@@ -6,9 +6,12 @@ import {
 } from 'react-router-dom';
 
 import Landing from "./components/Landing";
-import TransLogs from "./components/TransLogs"
+import TransLogs from "./components/TransLogs";
 import Components from './components/Components';
 import Simulation from './components/Simulation';
+import Memtable from './components/Memtable';
+import SSTable from './components/SSTable';
+import Compaction from './components/Compaction';
 
 function App() {
   return (
@@ -32,6 +35,21 @@ function App() {
             <Route
               path = "/simulation"
               element = {<Simulation />}
+            />
+
+            <Route
+              path = "/components/memtable"
+              element = {<Memtable />}
+            />
+
+            <Route
+              path = "components/sstable"
+              element = {<SSTable />}
+            />
+
+            <Route
+              path = "/components/compaction"
+              element = {<Compaction />}
             />
           </Routes>
         </BrowserRouter>
