@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import Landing from './Landing';
-import { useNavigate } from 'react-router-dom';
 
 // Mock useNavigate
 jest.mock('react-router-dom', () => ({
