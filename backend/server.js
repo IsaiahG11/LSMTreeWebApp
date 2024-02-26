@@ -38,7 +38,7 @@ app.post('/upload', async (req, res) => {
         await collection.insertMany(transactionLogs);
         console.log(`Inserted documents into collection ${collectionName}`);
 
-        res.send('File uploaded and processed successfully.');
+        res.status(200).send('File uploaded and processed successfully.');
     } catch (err) {
         console.error(`Error processing transaction logs: ${err}`);
         res.status(500).send('Error processing file.');
