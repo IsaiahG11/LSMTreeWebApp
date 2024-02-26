@@ -1,51 +1,60 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
-const { MongoClient } = require('mongodb');
-const fs = require('fs');
+const loadToMongo = require('./loadToMongo'); // Make sure this is the correct path to your module
 require('dotenv').config();
 
 const app = express();
 app.use(fileUpload());
 
 app.post('/upload', async (req, res) => {
-    if (!req.files || Object.keys(req.files).length === 0) {
+    if (!req.files || !req.files.transactionLog) {
         return res.status(400).send('No files were uploaded.');
     }
 
-    // Get the uploaded file
-    const transactionLog = req.files.transactionLog;
-
-    // Convert the uploaded file data to a JSON object
-    const transactionLogs = JSON.parse(transactionLog.data.toString());
-
-    // MongoDB URI
-    const uri = process.env.MONGODB_URI;
-    const client = new MongoClient(uri, { useUnifiedTopology: true });
+    // Get the uploaded file content
+    const fileContent = req.files.transactionLog.data.toString();
 
     try {
-        await client.connect();
-        const dbName = "transaction_logs";
-        const database = client.db(dbName);
-        
-        // You can customize this to use a specific collection or based on file name etc.
-        const collectionName = "uploaded_logs";
-        const collection = database.collection(collectionName);
+        // Parse the file content into JSON
+        const transactionLogs = JSON.parse(fileContent);
 
-        // Optionally clear the collection before inserting new documents
-        await collection.deleteMany({});
+        // Validate the transaction logs
+        const isValid = validateTransactionLogs(transactionLogs);
+        if (!isValid) {
+            return res.status(400).send('Invalid transaction log format.');
+        }
 
-        // Insert the parsed logs into the collection
-        await collection.insertMany(transactionLogs);
-        console.log(`Inserted documents into collection ${collectionName}`);
+        // Call the loadToMongo function and pass the transaction logs to it
+        await loadToMongo(transactionLogs);
 
         res.status(200).send('File uploaded and processed successfully.');
     } catch (err) {
         console.error(`Error processing transaction logs: ${err}`);
         res.status(500).send('Error processing file.');
-    } finally {
-        await client.close();
     }
 });
+
+// Validation function
+function validateTransactionLogs(logs) {
+    if (!Array.isArray(logs)) return false;
+
+    for (const entry of logs) {
+        if (typeof entry !== 'object' || entry === null) return false;
+        if (!['insert', 'update', 'search', 'delete'].includes(entry.operation)) return false;
+        
+        if (!entry.data || typeof entry.data !== 'object') return false;
+        if (!isValidNumberString(entry.data.key)) return false;
+        
+        if ((entry.operation === 'insert' || entry.operation === 'update') &&
+            !isValidNumberString(entry.data.value)) return false;
+    }
+    return true;
+}
+
+// Helper function to check if a string is a valid number string
+function isValidNumberString(str) {
+    return typeof str === 'string' && !isNaN(str) && !isNaN(parseFloat(str));
+}
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
