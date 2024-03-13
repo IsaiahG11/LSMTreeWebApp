@@ -1,12 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+
 const Components = () => {
   const navigate = useNavigate();
 
   return (
     <>
-      <h1>Welcome to the Landing Page</h1>
+      <h1>Welcome to the Components Page</h1>
 
       {/* Button for returning to root */}
       <button onClick={() => navigate("/")}>
