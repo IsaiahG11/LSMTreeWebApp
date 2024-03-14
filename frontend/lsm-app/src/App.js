@@ -14,18 +14,20 @@ import NavigationBar from './components/NavigationBar';
 
 function App() {
   return (
-    <BrowserRouter>
-      <NavigationBar /> {/* This line adds the Navigation Bar to every page */}
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/trans-logs" element={<TransLogs />} />
-        <Route path="/components" element={<Components />} />
-        <Route path="/simulation" element={<Simulation />} />
-        <Route path="/components/memtable" element={<Memtable />} />
-        <Route path="components/sstable" element={<SSTable />} />
-        <Route path="/components/compaction" element={<Compaction />} />
-      </Routes>
-    </BrowserRouter>
+    <div style={{ backgroundColor: '#262626', minHeight: '100vh', color: 'white'}}>
+      <BrowserRouter>
+        <NavigationBar /> {/* Navigation Bar */}
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/trans-logs" element={<TransLogs />} />
+          <Route path="/components" element={<Components />} />
+          <Route path="/simulation" element={<Simulation />} />
+          <Route path="/components/memtable" element={<Memtable />} />
+          <Route path="components/sstable" element={<SSTable />} />
+          <Route path="/components/compaction" element={<Compaction />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 

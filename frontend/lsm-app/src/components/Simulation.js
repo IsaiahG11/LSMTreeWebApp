@@ -59,9 +59,12 @@ const Simulation = () => {
           <button onClick={handleFileUpload}>Upload Transaction Log</button>
         </div>
 
+        <br></br>
+        <br></br>
+        
         {/* Button for returning to root */}
         <button onClick={() => navigate("/")}>
-          Main Menu
+        &larr; Home
         </button>
     </>
   );
