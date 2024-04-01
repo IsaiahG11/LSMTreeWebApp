@@ -2,71 +2,22 @@
   {
     "operation": "insert",
     "data": {
-      "key": "123",
-      "value": "Value1"
+      "key": "1",
+      "value": "1"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "456",
-      "value": "Value2"
-    }
-  },
-  {
-    "operation": "delete",
-    "data": {
-      "key": "789"
-    }
-  },
-  {
-    "operation": "update",
-    "data": {
-      "key": "123",
-      "new_value": "UpdatedValue1"
+      "key": "2",
+      "value": "7"
     }
   },
   {
     "operation": "insert",
     "data": {
-      "key": "234",
-      "value": "Value3"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "567",
-      "value": "Value4"
-    }
-  },
-  {
-    "operation": "update",
-    "data": {
-      "key": "456",
-      "new_value": "UpdatedValue2"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "890",
-      "value": "Value5"
-    }
-  },
-  {
-    "operation": "delete",
-    "data": {
-      "key": "234"
-    }
-  },
-  {
-    "operation": "insert",
-    "data": {
-      "key": "111",
-      "value": "Value6"
+      "key": "3",
+      "value": "5"
     }
   }
-  
-  ]
-  
+]

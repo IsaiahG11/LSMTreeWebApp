@@ -26,36 +26,57 @@ async function run() {
   // Name of the target database to read data
   const dbName = "transaction_logs";
   //Name of the target collection to read from
-  const collectionName = "log4";
+  const collectionName = process.argv[2];
   // Create references to the database and collection in order to run
   // operations on them.
   const database = client.db(dbName);
   const collection = database.collection(collectionName);
 
-  var transactions = [];
+  let transactions = [];
   try {
     const cursor = await collection.find();
     await cursor.forEach(item => {
 
-      transactions.push(item.data);
+      transactions.push([item.operation, item.data]);
 
     });
 
-    var skipList = new MemTable();
+    let skipList = new MemTable();
 
-    for(i = 0; i < transactions.length; i++){
+    for(let i = 0; i < transactions.length; i++){
 
-      console.log("Adding node" + (i + 1));
+      switch(transactions[i][0]){
 
-      var node = new ListNode(transactions[i].key, transactions[i].value);
-
-      skipList.insertNode(node);
-
-      console.log();
+        //Checks the type of transaction and calls operations on the memTable accordingly
+        case "insert":
+          console.log("Adding node" + (i + 1));
+          let nodeToInsert = new ListNode(transactions[i][1].key, parseInt(transactions[i][1].value));
+          skipList.insertNode(nodeToInsert);
+          console.log();
+          break;
+        
+        case "update":
+          console.log("Updating node with key " + transactions[i][1].key);
+          skipList.updateNode(transactions[i][1].key, parseInt(transactions[i][1].value));
+          break;
+      
+        case "delete":
+          console.log("Deleting node with key " + transactions[i][1].key);
+          skipList.deleteNode(transactions[i][1].key);
+          break;
+        case "search":
+          console.log("Searching for node with value " + transactions[i][1].key);
+          skipList.search(transactions[i][1].key);
+          break;
+      }
 
     }
 
+<<<<<<< HEAD
     skipList.printList();
+=======
+    skipList.printLayers();
+>>>>>>> upload
 
     // add a linebreak
     console.log();

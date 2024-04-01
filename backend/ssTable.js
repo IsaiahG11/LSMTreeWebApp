@@ -28,9 +28,33 @@ class SSTable {
     this.serialize();
   }
 
-  // Retrieve a value by key
+  //TODO Search
+  //TODO Update
+  
+  // Mark a key as deleted with a tombstone
+  delete(key) {
+    this.data.set(key, '*'); // Using null as the tombstone marker
+  }
+
+  // Retrieve a value by key with tombstones handled
   get(key) {
-    return this.data.get(key);
+    const value = this.data.get(key);
+    if (value === '*') { // Check for tombstone
+      return null; // Or indicate that the key is deleted
+    }
+    return value;
+  }
+
+  search(lookupValue) {
+    const ssTableFile = fs.readFileSync(this.filename + (this.serCount - 1), 'utf8');
+    let data = new Map(JSON.parse(ssTableFile));
+    var foundNode = null;
+    data.forEach((value, key) => {
+      if (value == lookupValue){ // TODO: check fot a tombstone here
+        foundNode = [key, value];
+      }
+    });
+    return foundNode;
   }
 
   // Serialize the SSTable to a file
@@ -44,41 +68,47 @@ class SSTable {
     this.data.clear();
   }
 
-  // Deserialize the SSTable from a file
-  deserialize() {
-    const fileData = fs.readFileSync(this.filename + this.serCount, 'utf8');
-    const entries = JSON.parse(fileData);
-    this.data = new Map(entries);
-  }
-
   /** 
    * Compacts all data in SSTable. Data is flushed to SSTable as a set of 4 [k,v] pairs.
    * Pairs within sets are ordered by value.
    * These sets are then compacted into one file.
    * Sets of [k,v] pairs are sorted newest to oldest.
    */
-  compact(){
+  compact() {
+    console.log("Compacting SSTable\n");
 
-    console.log("Compacting SSTable\n")
-
-    var serCountMinus = this.serCount - 1;
+    const serCountMinus = this.serCount - 1;
 
     const newFileData = fs.readFileSync(this.filename + this.serCount, 'utf8');
     const oldFileData = fs.readFileSync(this.filename + serCountMinus, 'utf8');
 
-    let newer = JSON.parse(newFileData);
-    let old = JSON.parse(oldFileData);
+    const newer = new Map(JSON.parse(newFileData));
+    const old = new Map(JSON.parse(oldFileData));
 
-    for (const [key, value] of old) {
-      newer.push([key, value]);
-    }
+    // Merge and exclude tombstoned entries
+    old.forEach((value, key) => {
+      if (newer.has(key) && newer.get(key) === '*') { // deletion
+        newer.delete(key); // Remove tombstoned keys
+      } else if (newer.has(key) && value !== '*') { // updates
+        newer.set(key, newer.get(key));
+      } else if (value !== '*') {
+        newer.set(key, value); // normal insertion / compaction
+      }
+    });
 
-    var serializedData = "";
-    for(const [key, value] of newer){
-      serializedData += JSON.stringify([key, value]);
-    }
-    
-    fs.writeFileSync(this.filename + this.serCount, serializedData, 'utf8');
+    // Serialize the merged data excluding tombstoned keys
+    const serializedData = JSON.stringify(Array.from(newer.entries()));
+    fs.writeFileSync(this.filename + (this.serCount+1), serializedData, 'utf8');
+
+    // Move the old file to backups
+    fs.rename(this.filename + serCountMinus, ("../backups/" + this.filename + serCountMinus), (err) => {
+        if (err) throw err;
+    });
+
+    fs.rename(this.filename + this.serCount, ("../backups/" + this.filename + this.serCount), (err) => {
+      if (err) throw err;
+    });
+    this.serCount++;
   }
 }
 

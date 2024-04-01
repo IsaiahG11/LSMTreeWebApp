@@ -7,105 +7,259 @@
 const SSTable = require('./ssTable'); // Import the SSTable module
 const ListNode = require('./listNode'); // Import the SSTable module
 
-// Define a simple skip list memtable class
+// Define a simple Skip List memtable class
 class MemTable{
+
     constructor(head = null){
+        this.maxNodes = 3;
         this.head = head;
         this.memTableSize = 0; // Size of the list
+        this.maxLayers = 3; //Max levels possible in SkipList
 
         this.ssTable = new SSTable('my_sstable.txt');
+
+        this.init();
     }
 
-    // Finds where the node needs to be inserted to keep ordering
-    findInsertLocation(node){
-        var tmp = this.head;
-        var tmpNext = null;
-        if(tmp.next != null){
-            tmpNext = tmp.next;
-        }else{
-            return tmp;
+    //Initializes each layer with a negative bound. (All inserted values must be 0 or positive)
+    init(){
+
+        let negNode = new ListNode("negBound", -1);
+
+        this.head = negNode;
+
+        for(let i = 1; i < this.maxLayers; i++){
+
+            let nextNegNode = new ListNode("negBound", -1);
+            negNode.down = nextNegNode;
+            negNode = nextNegNode;
+
         }
-        while(node.getValue() > tmp.next.getValue()){
-            if(tmpNext.next == null){
-                tmp = tmpNext;
-                break;
+    }
+
+    /**
+     * Inserts a listNode node into the memtable. It starts at the top level of the skipList and
+     * searches right (next) and down until it finds a node with a greater value, inserts node directly before
+     * 
+     * Node is inserted at the bottom layer of the list and then there is a 50 / 50 chance that node is 
+     * added to each layer above. It cannot be added to a layer if it is not already in the layer directly below it.
+     * 
+     * If the number of nodes in this memTable exceed the set maxNodes, they are flushed to the SSTable and memTable is cleared
+     * 
+     * @param {listNode} node Node to insert into the Memtable
+     */
+    insertNode(node){
+
+        let currNode = this.head;
+
+        let nodesBeforeInsert = [];
+
+        //Finds node to insert directly before
+        while(currNode != null){
+
+            if( currNode.next == null || node.getValue() < currNode.next.getValue()){
+
+                nodesBeforeInsert.unshift(currNode);
+                currNode = currNode.down;
+
             }else{
-                tmpNext = tmpNext.next;
-                tmp = tmp.next;
+
+                currNode = currNode.next;
+                
             }
         }
-        return tmp;
-    }
 
-    // Inserts the node into the memtable
-    insertNode(node){
-        if(this.head == null){
-            this.head = node;
-        }else if(node.getValue() < this.head.getValue()){
-            node.next = this.head
-            this.head = node;
-        }else{
-            var tmp = this.findInsertLocation(node);
-            node.next = tmp.next;
-            tmp.next = node;
+        // Used for promoting a node to the next layer
+        let willPromote = true;
+
+        // Reference to the node below current
+        let downNode = null;
+
+        //Uses randomizer and checks if node should be added to next level up.
+        while(nodesBeforeInsert.length != 0 && willPromote){
+
+            currNode = nodesBeforeInsert.shift();
+
+            node.down = downNode;
+
+            node.next = currNode.next;
+
+            currNode.next = node;
+
+            willPromote = Math.random() < 0.5;
+
+            downNode = currNode;
+
+            node = node.copyNode();
         }
 
+        //increments size of memTable
         this.memTableSize++
 
-        if(this.memTableSize > 3) {
+        //Flushes to SSTable and clears memTable if size > maxNodes
+        if(this.memTableSize > this.maxNodes) {
             this.writeMemTableToSSTable();
             this.memTableSize = 0;
         }
-        
+        this.printLayers();
+    }
+
+    // Search for a node by value
+    search(value) {
+    let currentNode = this.head;
+    let searching = true;
+
+    while (searching) {
+        if (currentNode.data.get(currentNode.key) === value) {
+            return currentNode; // Found a matching node with the target value
+        } else if (currentNode.next?.data.get(currentNode.next?.key) <= value) {  //
+            currentNode = currentNode.next;
+        } else if (currentNode.down) {
+            // Move down if the next node's value is greater
+            currentNode = currentNode.down;
+        } else {
+            searching = false;
+        }
+    }
+
+    console.log("Node not found in memTable, searching SSTable");
+    var foundNode = this.ssTable.search(value);
+    console.log(foundNode);
+    }
+
+    //TODO: look for in memTable first and remove if there, otherwise add tombstone.
+    deleteNode(key) {
+        let nodeToDelete = new ListNode(key, '*');
+        this.insertNode(nodeToDelete);
+    }
+
+    //Update
+    updateNode(key, newValue) {
+        let node = new ListNode(key, newValue);
+        console.log("Updated Node: '" + node.key + "': " + newValue);
+        this.insertNode(node); // Reuse the insert logic for updates
     }
 
     // Saves the memtable to an sstable
     writeMemTableToSSTable() {
-        const dataToWrite = [];
-    
+        let dataToWrite = []; 
+
         let currentNode = this.head;
-        while (currentNode) {
-            dataToWrite.push([currentNode.key, currentNode.getValue()]);
-            currentNode = currentNode.next;
+
+        let searching = true;
+
+        while(searching){
+            if(currentNode.down != null){
+                currentNode = currentNode.down;
+            }
+            else if(currentNode.next !=null){
+                currentNode = currentNode.next
+                dataToWrite.push([currentNode.key, currentNode.getValue()]);
+            }
+            else{
+                searching = false;
+            }
         }
-    
-        // Serialize the data and write it to the SSTable
+
         console.log("\nFlushing memTable to SSTable")
         this.ssTable.insertBulk(dataToWrite);
     
-        // Clear the memTable by resetting the head to null
-        this.head = null;
-        
+        // Empty the current memtable
+        this.clearMemTableLayers()
     }
+
+    //Helper Method to clear the MemTable after is has been flushed to an SSTable
+    clearMemTableLayers() {
+        let currentLayer = this.head; // Start at the top layer
+      
+        while (currentLayer) {
+          let currentNode = currentLayer;
+          while (currentNode) {
+            if (currentNode.next) {
+              currentNode.next = null;
+            }
+            currentNode = currentNode.next;
+          }
+      
+          currentLayer = currentLayer.down; // Move to the next layer
+        }
+    }      
+      
 
     // TESTING PURPOSES, to see what is in our memtable
     printList(){
-        var tmp = this.head;
+        let tmp = this.head;
         console.log(tmp);
         while(tmp.next != null){
             tmp = tmp.next;
             console.log(tmp);
         }
     }
+
+    // TESTING PURPOSES, prints visual skiplist w/ layers
+    printLayers(){
+        let layerString = "\n";
+        let node = this.head
+        while(node != null){
+            layerString += node.getValue();
+            let tmp = node;
+            while(tmp.next != null){
+                layerString += "  ---->  ";
+                tmp = tmp.next;
+                layerString += tmp.getValue();
+            }
+            node = node.down;
+            if(node != null){
+                layerString += "\n |        \n";
+            }
+        }
+        layerString += "\n";
+        console.log(layerString);
+    }
 }
 
 module.exports = MemTable; // Export the SkipList class
 
 
+<<<<<<< HEAD
 /**
 console.log();
+=======
+// let list = new MemTable();
+// list.insertNode(new ListNode("key1", 1));
+// list.deleteNode("key1");
+// list.insertNode(new ListNode("key2", 4));
+// list.insertNode(new ListNode("key3", 2));
+// list.insertNode(new ListNode("key4", 5));
+// list.insertNode(new ListNode("key5", 77));
 
-var list = new MemTable();
-var node0 = new ListNode("value0", 0);
-console.log("Adding node0")
-list.insertNode(node0);
+// list.insertNode(new ListNode("key6", 3));
+// list.insertNode(new ListNode("key4", 1414));
+// list.insertNode(new ListNode("key7", 4));
+// list.insertNode(new ListNode("key8", 6));
+// list.insertNode(new ListNode("key4", 88));
+// list.insertNode(new ListNode("key9", 8));
+>>>>>>> upload
+
+// list.insertNode(new ListNode("key10", 10));
+// list.insertNode(new ListNode("key11", 9));
+// list.insertNode(new ListNode("key12", 12));
+// list.insertNode(new ListNode("key13", 120));
+
+// list.printLayers();
+
+// console.log(list.search(2));
 
 
-var node1 = new ListNode("value1", 1);
-console.log("Adding node1")
-list.insertNode(node1);
+// if (foundNode) {
+//     console.log("Found node:", foundNode.getValue());
+// } else {
+//     console.log("Node not found.");
+// }
 
+// const foundAnothaNode = list.search(5);
 
+<<<<<<< HEAD
 var node2 = new ListNode("value2", 2);
 console.log("Adding node2")
 list.insertNode(node2);
@@ -145,3 +299,10 @@ console.log();
 list.printList();
 
 */
+=======
+// if (foundAnothaNode) {
+//     console.log("Found node:", foundAnothaNode.getValue());
+// } else {
+//     console.log("Node not found.");
+// }
+>>>>>>> upload
