@@ -12,7 +12,7 @@ const TransLogs = () => {
   const getDescription = () => {
     switch (activeOperation) {
       case 'insert':
-        return <p><strong>Insert:</strong> Similar to the Create CRUD operation; Insert adds a key with a value to the database.<br></br>In this example, we have the the key 1 with the value 1 being inserted first.</p>;
+        return <p><strong>Insert:</strong> Similar to the Create CRUD operation; Insert adds a key with a value to the database.<br></br>In this example, we have the key 1 with the value 1 being inserted first.</p>;
       case 'update':
         return <p><strong>Update:</strong> Update a key's value in the database. This operation modifies existing data.<br></br>In this example, we are updating key 1 with the value 8.</p>;
       case 'search':
@@ -24,9 +24,22 @@ const TransLogs = () => {
     }
   };
 
+  // Common button style
+  const buttonStyle = {
+    position: 'absolute',
+    width: '23px', 
+    height: '23px',
+    fontSize: '1.25vw',
+    borderRadius: '50%',
+    backgroundColor: 'green', 
+    color: 'white',
+    cursor: 'pointer', 
+    textAlign: 'center'
+  };
+
   return (
     <>
-        <h1>Understanding Transaction Logs</h1>
+      <h1>Understanding Transaction Logs</h1>
 
         <h2>What are Transaction Logs?</h2>
         <p>Transaction logs are sequential records of operations performed on a database or data storage system. These logs capture various types of operations, such as insertions, searches, and deletions, providing a history of changes made to the data.</p>
@@ -39,90 +52,45 @@ const TransLogs = () => {
         <p>If you are familiar with the CRUD operations, then this transaction log should be easier to digest. We decided to use "Insert" and "Search" instead of "Create" and "Read" simply to show that operations can vary across implementations. </p>
         <p>Feel free to click on the buttons next to each operation to learn more about them:</p>        
 
-        <div style={{ position: 'relative', maxWidth: '800px' }}>
-          <img src={`${process.env.PUBLIC_URL}/transaction-log-template.png`} alt="Template for Transaction" style={{ width: '40%', height: 'auto', maxWidth: '350px', maxHeight: '600px' }} />
-          
-          {/* Button for Insert */}
-          <button onClick={() => toggleOperationDesc('insert')} style={{
-            position: 'absolute',
-            top: '6.5%', 
-            left: '34%',
-            width: '23px', 
-            height: '23px',
-            fontSize: '1.25vw',
-            borderRadius: '50%',
-            backgroundColor: 'green', 
-            color: 'white',
-            cursor: 'pointer', 
-            textAlign: 'center'
-          }}>
-          </button>
-
-          {/* Button for Update */}
-          <button onClick={() => toggleOperationDesc('update')} style={{
-            position: 'absolute',
-            top: '31%',
-            left: '34%',
-            width: '23px', 
-            height: '23px',
-            fontSize: '1.25vw', 
-            borderRadius: '50%',
-            backgroundColor: 'green', 
-            color: 'white',
-            cursor: 'pointer', 
-            textAlign: 'center'
-          }}>
-          </button>
-
-          {/* Button for Search */}
-          <button onClick={() => toggleOperationDesc('search')} style={{
-            position: 'absolute',
-            top: '55.5%',
-            left: '34%',
-            width: '23px', 
-            height: '23px', 
-            fontSize: '1.25vw',
-            borderRadius: '50%',
-            backgroundColor: 'green', 
-            color: 'white',
-            cursor: 'pointer', 
-            textAlign: 'center'
-          }}>
-          </button>
-
-          {/* Button for Delete */}
-          <button onClick={() => toggleOperationDesc('delete')} style={{
-            position: 'absolute',
-            top: '76%',
-            left: '34%',
-            width: '23px', 
-            height: '23px',
-            fontSize: '1.25vw', 
-            borderRadius: '50%',
-            backgroundColor: 'green',
-            color: 'white', 
-            cursor: 'pointer', 
-            textAlign: 'center'
-          }}>
-          </button>
+      {/* Other elements */}
+      <div style={{ position: 'relative', maxWidth: '800px' }}>
+        <img src={`${process.env.PUBLIC_URL}/transaction-log-template.png`} alt="Template for Transaction" style={{ width: '40%', height: 'auto', maxWidth: '300px', maxHeight: '600px' }} />
         
-          {/* Description */}
-          {activeOperation && <div style={{
+        {/* Button for Insert */}
+        <button onClick={() => toggleOperationDesc('insert')} style={{ ...buttonStyle, top: '6.5%', left: '34%' }}>
+        </button>
+
+        {/* Button for Update */}
+        <button onClick={() => toggleOperationDesc('update')} style={{ ...buttonStyle, top: '31%', left: '34%' }}>
+        </button>
+
+        {/* Button for Search */}
+        <button onClick={() => toggleOperationDesc('search')} style={{ ...buttonStyle, top: '55.5%', left: '34%' }}>
+        </button>
+
+        {/* Button for Delete */}
+        <button onClick={() => toggleOperationDesc('delete')} style={{ ...buttonStyle, top: '76%', left: '34%' }}>
+        </button>
+      
+        {/* Description */}
+        {activeOperation && (
+          <div style={{
             position: 'absolute',
             top: '5%',
             left: '43%',
-            width: '50vw',
-            fontSize: '1.8vw',
+            fontSize: '3vw',
             backgroundColor: 'green',
             padding: '10px',
             borderRadius: '5px',
+            textAlign: 'left',
             zIndex: 1000 // Ensures the description is above other elements
           }}>
             {getDescription()}
-          </div>}
-        </div>
+          </div>
+        )}
+      </div>
 
-        <h2>Conclusion</h2>
+      <h2>Conclusion</h2>
         <p>Transaction logs provide a detailed record of operations performed on a database, including insertions, searches, and deletions. By maintaining a comprehensive history of changes, transaction logs enable data recovery, replication, and integrity verification in database systems.</p>
 
         <br>
@@ -133,10 +101,10 @@ const TransLogs = () => {
 
         <br></br>
 
-        {/* Button for returning to root */}
-        <button onClick={() => navigate("/")}>
-          &larr; Home
-        </button>
+      {/* Conclusion and links */}
+      <button onClick={() => navigate("/")}>
+        &larr; Home
+      </button>
     </>
   );
 };
