@@ -131,6 +131,8 @@ const TransLogs = () => {
         <p>If you want to learn more about how LSM trees work, continue on to the <a href="http://localhost:3000/components">components</a> page</p>
         <p>If you'd like to get started on <a href="http://localhost:3000/simulation">simulating</a> your own custom transaction log, please proceed to the simulation page</p>
 
+        <br></br>
+
         {/* Button for returning to root */}
         <button onClick={() => navigate("/")}>
           &larr; Home
