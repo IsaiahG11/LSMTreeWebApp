@@ -39,16 +39,16 @@ const TransLogs = () => {
         <p>If you are familiar with the CRUD operations, then this transaction log should be easier to digest. We decided to use "Insert" and "Search" instead of "Create" and "Read" simply to show that operations can vary across implementations. </p>
         <p>Feel free to click on the buttons next to each operation to learn more about them:</p>        
 
-        <div style={{ position: 'relative', textAlign: 'left' }}>
-          <img src={`${process.env.PUBLIC_URL}/transaction-log-template.png`} alt="Template for Transaction" style={{ width: '40%', height: 'auto' }} />
+        <div style={{ position: 'relative', maxWidth: '800px' }}>
+          <img src={`${process.env.PUBLIC_URL}/transaction-log-template.png`} alt="Template for Transaction" style={{ width: '40%', height: 'auto', maxWidth: '300px', maxHeight: '600px' }} />
           
           {/* Button for Insert */}
           <button onClick={() => toggleOperationDesc('insert')} style={{
             position: 'absolute',
             top: '6.5%', 
             left: '34%',
-            width: '3vw', 
-            height: '3vw',
+            width: '23px', 
+            height: '23px',
             fontSize: '1.25vw',
             borderRadius: '50%',
             backgroundColor: 'green', 
@@ -63,8 +63,8 @@ const TransLogs = () => {
             position: 'absolute',
             top: '31%',
             left: '34%',
-            width: '3vw', 
-            height: '3vw',
+            width: '23px', 
+            height: '23px',
             fontSize: '1.25vw', 
             borderRadius: '50%',
             backgroundColor: 'green', 
@@ -79,8 +79,8 @@ const TransLogs = () => {
             position: 'absolute',
             top: '55.5%',
             left: '34%',
-            width: '3vw',
-            height: '3vw', 
+            width: '23px', 
+            height: '23px', 
             fontSize: '1.25vw',
             borderRadius: '50%',
             backgroundColor: 'green', 
@@ -95,8 +95,8 @@ const TransLogs = () => {
             position: 'absolute',
             top: '76%',
             left: '34%',
-            width: '3vw',
-            height: '3vw', 
+            width: '23px', 
+            height: '23px',
             fontSize: '1.25vw', 
             borderRadius: '50%',
             backgroundColor: 'green',
@@ -111,11 +111,11 @@ const TransLogs = () => {
             position: 'absolute',
             top: '5%',
             left: '43%',
-            fontSize: '3vw',
+            width: '50vw',
+            fontSize: '1.8vw',
             backgroundColor: 'green',
             padding: '10px',
             borderRadius: '5px',
-            textAlign: 'left',
             zIndex: 1000 // Ensures the description is above other elements
           }}>
             {getDescription()}
