@@ -78,7 +78,7 @@ const TransLogs = () => {
             position: 'absolute',
             top: '5%',
             left: '43%',
-            fontSize: '3vw',
+            fontSize: '2vw',
             backgroundColor: 'green',
             padding: '10px',
             borderRadius: '5px',
