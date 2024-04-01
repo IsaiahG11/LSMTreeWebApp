@@ -40,7 +40,7 @@ const TransLogs = () => {
         <p>Feel free to click on the buttons next to each operation to learn more about them:</p>        
 
         <div style={{ position: 'relative', maxWidth: '800px' }}>
-          <img src={`${process.env.PUBLIC_URL}/transaction-log-template.png`} alt="Template for Transaction" style={{ width: '40%', height: 'auto', maxWidth: '300px', maxHeight: '600px' }} />
+          <img src={`${process.env.PUBLIC_URL}/transaction-log-template.png`} alt="Template for Transaction" style={{ width: '40%', height: 'auto', maxWidth: '350px', maxHeight: '600px' }} />
           
           {/* Button for Insert */}
           <button onClick={() => toggleOperationDesc('insert')} style={{
