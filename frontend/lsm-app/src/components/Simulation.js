@@ -55,15 +55,15 @@ const Simulation = () => {
         <div>
           <p>This is a text message.</p>
           {/* File input for uploading JSON */}
-          <input type="file" accept=".json" onChange={e => setFile(e.target.files[0])} />
-          <button onClick={handleFileUpload}>Upload Transaction Log</button>
+          <input type="file" accept=".json" onChange={e => setFile(e.target.files[0])} style={{ marginLeft: "1vw", marginRight: "1vw"}}/>
+          <button onClick={handleFileUpload} style={{ marginLeft: "1vw", marginRight: "1vw"}}>Upload Transaction Log </button>
         </div>
 
         <br></br>
         <br></br>
         
         {/* Button for returning to root */}
-        <button onClick={() => navigate("/")}>
+        <button onClick={() => navigate("/")} style={{ marginLeft: "1vw", marginRight: "1vw"}}>
         &larr; Home
         </button>
     </>

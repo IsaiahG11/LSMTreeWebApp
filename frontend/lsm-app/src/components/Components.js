@@ -26,17 +26,17 @@ const Components = () => {
       <p>For more in-depth information on each component, explore the following pages:</p>
 
       {/* Button for Memtable */}
-      <button onClick={() => navigate("/components/memtable")}>
+      <button onClick={() => navigate("/components/memtable")} style={{ marginLeft: "1vw", marginRight: "1vw"}}>
         Memtable
       </button>
 
       {/* Button for SSTable */}
-      <button onClick={() => navigate("/components/sstable")}>
+      <button onClick={() => navigate("/components/sstable")} style={{ marginLeft: "1vw", marginRight: "1vw"}}>
         SSTable
       </button>
 
       {/* Button for Compaction */}
-      <button onClick={() => navigate("/components/compaction")}>
+      <button onClick={() => navigate("/components/compaction")} style={{ marginLeft: "1vw", marginRight: "1vw"}}>
         Compaction
       </button>
       
@@ -44,7 +44,7 @@ const Components = () => {
       <br></br>
         
       {/* Button for returning to root */}
-      <button onClick={() => navigate("/")}>
+      <button onClick={() => navigate("/")} style={{ marginLeft: "1vw", marginRight: "1vw"}}>
       &larr; Home
       </button>
     </>
