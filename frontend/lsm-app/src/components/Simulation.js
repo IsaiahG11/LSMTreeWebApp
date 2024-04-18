@@ -43,36 +43,52 @@ const Simulation = () => {
   };
 
 
-  return (
-      <>
-          <h1>Custom LSM Tree Simulator:</h1>
-          <p>Please select the "Browse..." button below to search for your transaction log JSON file. Then press the
-              "Upload Transaction Log" button to see your transaction log appear below </p>
-          <br />
-          <div>
-              <input type="file" accept=".json" onChange={e => setFile(e.target.files[0])} />
-              <button onClick={handleFileUpload}>Upload Transaction Log</button>
-          </div>
-          <br />
-          <div style={{display: "flex", justifyContent: "space-between", marginBottom: "20px"}}>
-              <div style={{flex: 1, marginRight: "10px", padding: "10px", border: "1px solid gray", minHeight: "150px"}}>
-                  <h2>Transaction Log: {uploadedFileName || ""}</h2>
-                  <hr/>
-                  <ul>
-                      {transactionLogs.map((log, index) => (
-                          <li key={index}>{log.operation.toUpperCase()}: key = {log.data.key}{log.data.value ? `, value = ${log.data.value}` : ""}</li>
-                      ))}
-                  </ul>
-              </div>
-              <div style={{flex: 1, marginLeft: "10px", padding: "10px", border: "1px solid gray", minHeight: "150px"}}>
-                  <h2>Simulation:</h2>
-                  <hr/>
-                  {/* Placeholder for Simulation Visuals */}
-              </div>
-          </div>
-          <button onClick={() => navigate("/")}>Home</button>
-      </>
-  );
+    return (
+        <>
+            <h1>Custom LSM Tree Simulator:</h1>
+            <p>Please select the "Browse..." button below to search for your transaction log JSON file. Then press the
+                "Upload Transaction Log" button to see your transaction log appear below </p>
+            <br />
+            <div>
+                <input type="file" accept=".json" onChange={e => setFile(e.target.files[0])} />
+                <button onClick={handleFileUpload}>Upload Transaction Log</button>
+            </div>
+            <br />
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
+                <div style={{
+                    flex: "1 1 25%",
+                    marginRight: "10px",
+                    padding: "10px",
+                    border: "1px solid gray",
+                    minHeight: "150px",
+                    fontSize: "1.0vw"  // Responsive font size based on viewport width
+                }}>
+                    <h2 style={{ fontSize: "2vw" }}>Transaction Log: {uploadedFileName || ""}</h2>
+                    <hr />
+                    <ul>
+                        {transactionLogs.map((log, index) => (
+                            <li key={index} style={{ fontSize: "1.5vw" }}>
+                                {log.operation.toUpperCase()}: key = {log.data.key}{log.data.value ? `, value = ${log.data.value}` : ""}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div style={{
+                    flex: "3 1 75%",
+                    marginLeft: "10px",
+                    padding: "10px",
+                    border: "1px solid gray",
+                    minHeight: "150px",
+                    fontSize: "1.2vw"  // Larger font for larger box
+                }}>
+                    <h2 style={{ fontSize: "2vw" }}>Simulation:</h2>
+                    <hr />
+                    {/* Placeholder for Simulation Visuals */}
+                </div>
+            </div>
+            <button onClick={() => navigate("/")}>Home</button>
+        </>
+    );
 };
 
 export default Simulation;
