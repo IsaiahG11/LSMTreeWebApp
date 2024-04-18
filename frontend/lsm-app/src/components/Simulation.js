@@ -51,15 +51,17 @@ const Simulation = () => {
         <br></br>
         <div style={{display: "flex", justifyContent: "space-between", marginBottom: "20px"}}>
           <div style={{flex: 1, marginRight: "10px", padding: "10px", border: "1px solid gray", minHeight: "150px"}}>
-            <h2>Transaction Log: {uploadedFileName || "No file uploaded"}</h2>
+            <h2>Transaction Log: {uploadedFileName || ""}</h2>
             <hr/>
             {/* Placeholder for additional details about the transaction log */}
           </div>
-          <div style={{flex: 1, marginLeft: "10px", padding: "10px", border: "1px solid gray", minHeight: "150px"}}>
-            {/* Placeholder for additional UI components or information */}
-          </div>
+            <div style={{flex: 1, marginLeft: "10px", padding: "10px", border: "1px solid gray", minHeight: "150px"}}>
+                <h2>Simulation:</h2>
+                <hr/>
+                {/* Placeholder for Simulation Visuals */}
+            </div>
         </div>
-        <button onClick={() => navigate("/")}>Home</button>
+          <button onClick={() => navigate("/")}>Home</button>
       </>
   );
 };
