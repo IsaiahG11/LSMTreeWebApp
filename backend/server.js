@@ -1,22 +1,23 @@
 const express = require('express');
-const fileUpload = require('express-fileupload');
-const loadToMongo = require('./loadToMongo'); // Make sure this is the correct path to your module
+const multer = require('multer');
+const fs = require('fs');  // Add this line to import the fs module
+const loadToMongo = require('./loadToMongo');
 require('dotenv').config();
 
 const app = express();
-app.use(fileUpload());
 
-app.post('/upload', async (req, res) => {
-    if (!req.files || !req.files.transactionLog) {
-        return res.status(400).send('No files were uploaded.');
+// Setup Multer for in-memory storage
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
+app.post('/upload', upload.single('transactionLog'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file was uploaded.');
     }
 
-    // Get the uploaded file content
-    const fileContent = req.files.transactionLog.data.toString();
-
     try {
-        // Parse the file content into JSON
-        const transactionLogs = JSON.parse(fileContent);
+        // Since file is in memory, use buffer directly to parse JSON
+        const transactionLogs = JSON.parse(req.file.buffer.toString());
 
         // Validate the transaction logs
         const isValid = validateTransactionLogs(transactionLogs);
@@ -24,8 +25,8 @@ app.post('/upload', async (req, res) => {
             return res.status(400).send('Invalid transaction log format.');
         }
 
-        // Call the loadToMongo function and pass the transaction logs to it
-        await loadToMongo(transactionLogs);
+        // Call the loadToMongo function and pass the transaction logs and file name
+        await loadToMongo(transactionLogs, req.file.originalname);
 
         res.status(200).send('File uploaded and processed successfully.');
     } catch (err) {
@@ -41,10 +42,10 @@ function validateTransactionLogs(logs) {
     for (const entry of logs) {
         if (typeof entry !== 'object' || entry === null) return false;
         if (!['insert', 'update', 'search', 'delete'].includes(entry.operation)) return false;
-        
+
         if (!entry.data || typeof entry.data !== 'object') return false;
         if (!isValidNumberString(entry.data.key)) return false;
-        
+
         if ((entry.operation === 'insert' || entry.operation === 'update') &&
             !isValidNumberString(entry.data.value)) return false;
     }

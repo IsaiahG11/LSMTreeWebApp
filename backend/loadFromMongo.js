@@ -72,11 +72,11 @@ async function run() {
 
     }
 
-<<<<<<< HEAD
+
     skipList.printList();
-=======
+
     skipList.printLayers();
->>>>>>> upload
+
 
     // add a linebreak
     console.log();

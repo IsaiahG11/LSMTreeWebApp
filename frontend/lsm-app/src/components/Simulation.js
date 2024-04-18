@@ -10,10 +10,13 @@ const Simulation = () => {
       alert("Please select a file first!");
       return;
     }
-  
+
     const formData = new FormData();
     formData.append("transactionLog", file);
-  
+    formData.append("filename", file.name);  // Include the filename in the form data
+
+    console.log(formData.toString());
+
     try {
       const response = await fetch('http://localhost:3000/upload', {
         method: 'POST',
