@@ -9,11 +9,10 @@ require('dotenv').config();
 const port = process.env.PORT || 5000
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 app.use(simulationRoutes);
 
-// Enable All CORS Requests for development, for production you might want to restrict it
-app.use(cors());
 
 // Setup Multer for in-memory storage
 const storage = multer.memoryStorage();
@@ -33,7 +32,10 @@ app.post('/upload', upload.single('transactionLog'), async (req, res) => {
         }
 
         await loadToMongo(transactionLogs, req.file.originalname);
-        res.status(200).json({ message: 'File uploaded and processed successfully.' });
+        res.status(200).json({
+            message: 'File uploaded and processed successfully.',
+            logs: transactionLogs  // Include the logs in the response
+        });
     } catch (err) {
         console.error(`Error processing transaction logs: ${err}`);
         res.status(500).json({ message: `Error processing file: ${err.message}` });

@@ -1,0 +1,30 @@
+[
+  {
+    "operation": "insert",
+    "data": {
+      "key": "1",
+      "value": "1"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "2",
+      "value": "7"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "3",
+      "value": "5"
+    }
+  },
+  {
+    "operation": "insert",
+    "data": {
+      "key": "4",
+      "value": "10"
+    }
+  }
+]
