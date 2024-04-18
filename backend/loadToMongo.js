@@ -8,10 +8,9 @@ const { MongoClient } = require("mongodb");
 require('dotenv').config();
 
 async function loadToMongo(transactionLogs, filename) {
-  const uri = "mongodb+srv://LSMTest:wztYw7BcN6bNqL50@cluster0.uijsyak.mongodb.net/?retryWrites=true&w=majority";
+  const uri = process.env.MONGODB_URI;  // Make sure to use the environment variable for URI
   const client = new MongoClient(uri);
 
-  console.log(filename);
   // Sanitize the filename to use as a collection name
   const sanitizedFilename = filename.replace(/[^a-zA-Z0-9_]+/g, '_');
 
@@ -19,10 +18,16 @@ async function loadToMongo(transactionLogs, filename) {
     await client.connect();
     const dbName = "transaction_logs";
     const database = client.db(dbName);
-    const collectionName = sanitizedFilename || "default_collection";
-    const collection = database.collection(collectionName);
 
-    await collection.deleteMany({});  // Be cautious with this in production!
+    // Check if the collection already exists
+    const collections = await database.listCollections().toArray();
+    const collectionNames = collections.map(col => col.name);
+    if (collectionNames.includes(sanitizedFilename)) {
+      throw new Error('Collection already exists');  // Custom error for existing collection
+    }
+
+    const collection = database.collection(sanitizedFilename);
+    await collection.deleteMany({});  // Caution: Consider the implications in production!
     await collection.insertMany(transactionLogs);
     console.log(`Inserted documents into collection ${collectionName}`);
   } catch (err) {

@@ -168,7 +168,7 @@ class MemTable{
         this.clearMemTableLayers()
     }
 
-    //Helper Method to clear the MemTable after is has been flushed to an SSTable
+    //Helper Method to clear the MemTable after it has been flushed to an SSTable
     clearMemTableLayers() {
         let currentLayer = this.head; // Start at the top layer
       
@@ -196,7 +196,7 @@ class MemTable{
         }
     }
 
-    // TESTING PURPOSES, prints visual skiplist w/ layers
+    // TESTING PURPOSES, prints visual skip list w/ layers
     printLayers(){
         let layerString = "\n";
         let node = this.head
@@ -221,7 +221,7 @@ class MemTable{
 module.exports = MemTable; // Export the SkipList class
 
 
-<<<<<<< HEAD
+
 /**
 console.log();
 =======
@@ -259,7 +259,7 @@ console.log();
 
 // const foundAnothaNode = list.search(5);
 
-<<<<<<< HEAD
+
 var node2 = new ListNode("value2", 2);
 console.log("Adding node2")
 list.insertNode(node2);
@@ -299,10 +299,10 @@ console.log();
 list.printList();
 
 */
-=======
+
 // if (foundAnothaNode) {
 //     console.log("Found node:", foundAnothaNode.getValue());
 // } else {
 //     console.log("Node not found.");
 // }
->>>>>>> upload
+

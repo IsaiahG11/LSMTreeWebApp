@@ -3,87 +3,54 @@
  * @version September 2023
  * @class Loads collections from our MongoDB database
  */
-
-
-const ListNode = require('./listNode'); //Import the ListNode module
-const MemTable = require('./memTable'); //Import the MemTable module
-
+const express = require('express');
 const { MongoClient } = require("mongodb");
-const fs = require("fs");
-const path = require("path");
+const ListNode = require('./listNode'); // Import the ListNode module
+const MemTable = require('./memTable'); // Import the MemTable module
 require('dotenv').config();
 
-async function run() {
-  // connection string with Altas cluster specifics stored in .env
-  const uri = process.env.MONGODB_URI; //uses environment variable
-  // The MongoClient is the object that references the connection to our
-  // datastore (Atlas, for example)
-  const client = new MongoClient(uri, { useUnifiedTopology: true });
+const router = express.Router();
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri);
 
-  //connects to the specified MongoClient
-  await client.connect();
+router.post('/simulate', async (req, res) => {
+  const collectionName = req.body.collectionName; // Assume the front end sends this
 
-  // Name of the target database to read data
-  const dbName = "transaction_logs";
-  //Name of the target collection to read from
-  const collectionName = process.argv[2];
-  // Create references to the database and collection in order to run
-  // operations on them.
-  const database = client.db(dbName);
-  const collection = database.collection(collectionName);
-
-  let transactions = [];
   try {
+    await client.connect();
+    const dbName = "transaction_logs";
+    const database = client.db(dbName);
+    const collection = database.collection(collectionName);
     const cursor = await collection.find();
-    await cursor.forEach(item => {
-
-      transactions.push([item.operation, item.data]);
-
-    });
+    const transactions = await cursor.toArray();
 
     let skipList = new MemTable();
 
-    for(let i = 0; i < transactions.length; i++){
-
-      switch(transactions[i][0]){
-
-        //Checks the type of transaction and calls operations on the memTable accordingly
+    transactions.forEach((item, i) => {
+      switch (item.operation) {
         case "insert":
-          console.log("Adding node" + (i + 1));
-          let nodeToInsert = new ListNode(transactions[i][1].key, parseInt(transactions[i][1].value));
+          let nodeToInsert = new ListNode(item.data.key, parseInt(item.data.value));
           skipList.insertNode(nodeToInsert);
-          console.log();
           break;
-        
         case "update":
-          console.log("Updating node with key " + transactions[i][1].key);
-          skipList.updateNode(transactions[i][1].key, parseInt(transactions[i][1].value));
+          skipList.updateNode(item.data.key, parseInt(item.data.value));
           break;
-      
         case "delete":
-          console.log("Deleting node with key " + transactions[i][1].key);
-          skipList.deleteNode(transactions[i][1].key);
+          skipList.deleteNode(item.data.key);
           break;
         case "search":
-          console.log("Searching for node with value " + transactions[i][1].key);
-          skipList.search(transactions[i][1].key);
+          skipList.search(item.data.key);
           break;
       }
+    });
 
-    }
-
-
-    skipList.printList();
-
-    skipList.printLayers();
-
-
-    // add a linebreak
-    console.log();
+    res.status(200).json({ message: 'Simulation completed successfully.' });
   } catch (err) {
-    console.error(`Something went wrong trying to find the documents: ${err}\n`);
+    console.error(`Error while simulating LSM Tree operations: ${err}`);
+    res.status(500).send('Failed to simulate LSM Tree operations.');
+  } finally {
+    await client.close();
   }
-  await client.close();
-}
+});
 
-run()
+module.exports = router;

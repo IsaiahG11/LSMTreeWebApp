@@ -1,10 +1,13 @@
 const express = require('express');
 const multer = require('multer');
-const fs = require('fs');  // Add this line to import the fs module
 const loadToMongo = require('./loadToMongo');
+const bodyParser = require('body-parser');
+const simulationRoutes = require('./loadFromMongo'); // Use the correct path
 require('dotenv').config();
 
 const app = express();
+app.use(bodyParser.json());
+app.use(simulationRoutes);
 
 // Setup Multer for in-memory storage
 const storage = multer.memoryStorage();
@@ -18,7 +21,7 @@ app.post('/upload', upload.single('transactionLog'), async (req, res) => {
     try {
         // Since file is in memory, use buffer directly to parse JSON
         const transactionLogs = JSON.parse(req.file.buffer.toString());
-
+        await loadToMongo(transactionLogs, req.file.originalname);
         // Validate the transaction logs
         const isValid = validateTransactionLogs(transactionLogs);
         if (!isValid) {
@@ -30,8 +33,12 @@ app.post('/upload', upload.single('transactionLog'), async (req, res) => {
 
         res.status(200).send('File uploaded and processed successfully.');
     } catch (err) {
-        console.error(`Error processing transaction logs: ${err}`);
-        res.status(500).send('Error processing file.');
+        if (err.message === 'Collection already exists') {
+            res.status(409).send({ message: "Collection already exists. Please rename the file or choose a different file." });
+        } else {
+            console.error(`Error processing transaction logs: ${err}`);
+            res.status(500).send('Error processing file.');
+        }
     }
 });
 
