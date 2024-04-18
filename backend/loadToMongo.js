@@ -29,7 +29,7 @@ async function loadToMongo(transactionLogs, filename) {
     const collection = database.collection(sanitizedFilename);
     await collection.deleteMany({});  // Caution: Consider the implications in production!
     await collection.insertMany(transactionLogs);
-    console.log(`Inserted documents into collection ${collectionName}`);
+    console.log(`Inserted documents into collection ${sanitizedFilename}`);
   } catch (err) {
     throw err; // Re-throw the error to be handled by the caller
   } finally {

@@ -17,18 +17,21 @@ const Simulation = () => {
     setUploadedFileName(file.name); // Set the file name when the file is selected for upload
 
     try {
-      const response = await fetch('http://localhost:3000/upload', {
+      const response = await fetch('http://localhost:5000/upload', { //TODO should this be 3000 or 5000
         method: 'POST',
         body: formData,
       });
 
-      const responseBody = await response.json();
-      if (response.ok) {
-        alert("File uploaded successfully!");
-      } else {
-        console.error(`Upload failed with status: ${response.status}`);
-        alert(`Failed to upload file. Server responded with status ${response.status}: ${responseBody.message}`);
-      }
+      console.error(response);
+
+        if (response.ok) {
+            const responseBody = await response.json();  // Now safe to parse JSON
+            alert("File uploaded successfully!");
+            console.log(responseBody.message);
+        } else {
+            console.error(`Upload failed with status: ${response.status} File already exists!`);
+            alert(`Failed to upload file. That file name already exists!`);
+        }
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("An error occurred while uploading the file.");

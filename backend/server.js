@@ -3,11 +3,17 @@ const multer = require('multer');
 const loadToMongo = require('./loadToMongo');
 const bodyParser = require('body-parser');
 const simulationRoutes = require('./loadFromMongo'); // Use the correct path
+const cors = require('cors');
 require('dotenv').config();
+
+const port = process.env.PORT || 5000
 
 const app = express();
 app.use(bodyParser.json());
 app.use(simulationRoutes);
+
+// Enable All CORS Requests for development, for production you might want to restrict it
+app.use(cors());
 
 // Setup Multer for in-memory storage
 const storage = multer.memoryStorage();
@@ -19,26 +25,18 @@ app.post('/upload', upload.single('transactionLog'), async (req, res) => {
     }
 
     try {
-        // Since file is in memory, use buffer directly to parse JSON
         const transactionLogs = JSON.parse(req.file.buffer.toString());
-        await loadToMongo(transactionLogs, req.file.originalname);
-        // Validate the transaction logs
+
         const isValid = validateTransactionLogs(transactionLogs);
         if (!isValid) {
             return res.status(400).send('Invalid transaction log format.');
         }
 
-        // Call the loadToMongo function and pass the transaction logs and file name
         await loadToMongo(transactionLogs, req.file.originalname);
-
-        res.status(200).send('File uploaded and processed successfully.');
+        res.status(200).json({ message: 'File uploaded and processed successfully.' });
     } catch (err) {
-        if (err.message === 'Collection already exists') {
-            res.status(409).send({ message: "Collection already exists. Please rename the file or choose a different file." });
-        } else {
-            console.error(`Error processing transaction logs: ${err}`);
-            res.status(500).send('Error processing file.');
-        }
+        console.error(`Error processing transaction logs: ${err}`);
+        res.status(500).json({ message: `Error processing file: ${err.message}` });
     }
 });
 
@@ -64,7 +62,6 @@ function isValidNumberString(str) {
     return typeof str === 'string' && !isNaN(str) && !isNaN(parseFloat(str));
 }
 
-const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });

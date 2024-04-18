@@ -1,8 +1,14 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
+
+// Enable CORS for your React application's domain
+app.use(cors({
+  origin: 'http://localhost:3000' // Adjust this to match the URL and port of your React app
+}));
 
 // Serve static files from the build folder
 app.use(express.static(path.join(__dirname, 'build')));
