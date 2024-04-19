@@ -1,2 +1,5 @@
 backend/.env
 my_sstable.*
+
+/node_modules
+frontend/lsm-app/build/

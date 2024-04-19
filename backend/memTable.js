@@ -127,7 +127,6 @@ class MemTable{
     console.log(foundNode);
     }
 
-    //TODO: look for in memTable first and remove if there, otherwise add tombstone.
     deleteNode(key) {
         let nodeToDelete = new ListNode(key, '*');
         this.insertNode(nodeToDelete);
@@ -224,6 +223,8 @@ module.exports = MemTable; // Export the SkipList class
 
 /**
 console.log();
+
+TESTING
 =======
 // let list = new MemTable();
 // list.insertNode(new ListNode("key1", 1));
@@ -299,10 +300,4 @@ console.log();
 list.printList();
 
 */
-
-// if (foundAnothaNode) {
-//     console.log("Found node:", foundAnothaNode.getValue());
-// } else {
-//     console.log("Node not found.");
-// }
 
