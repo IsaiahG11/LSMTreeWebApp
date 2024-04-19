@@ -77,7 +77,7 @@ const SkipList = ({ getValue }) => {
                         start={`node-${node.value}-${node.level}`}
                         end={`node-${nextNode.value}-${nextNode.level}`}
                         headSize={1}
-                        color='black'
+                        color='blue'
                         strokeWidth={1}
                     />
                 );

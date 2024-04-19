@@ -41,7 +41,7 @@ const Simulation = () => {
         console.error(
           `Upload failed with status: ${response.status} File already exists!`
         );
-        alert(`Failed to upload file. That file name already exists!`);
+        alert(`Failed to upload file. Either the file name already exists or you need to reformat your transaction log!`);
       }
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -110,11 +110,11 @@ const Simulation = () => {
             marginLeft: "10px",
             padding: "10px",
             border: "1px solid gray",
-            minHeight: "150px",
+            minHeight: "400px",
             fontSize: "1.2vw", // Larger font for larger box
           }}
         >
-          <h2 style={{ fontSize: "2vw" }}>Simulation:</h2>
+          <h2 style={{ fontSize: "2vw" }}>Simulation: *sorted by values*</h2>
           <hr />
           <SkipList getValue={getValue} />
         </div>
