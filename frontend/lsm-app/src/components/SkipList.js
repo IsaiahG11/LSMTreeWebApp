@@ -15,6 +15,8 @@ const SkipList = ({ getValue }) => {
     // State for the last node
     const [lastNode, setLastNode] = useState(null);
 
+    var flushedNodes = [];
+
     useEffect(() => {
         // Random chance for the last node to get promoted to the next level until it fails the coin flip or reaches the max level
         if (lastNode) {
@@ -45,14 +47,38 @@ const SkipList = ({ getValue }) => {
     }
 
     function flushNodes(){
-        let nodesCopy = JSON.parse(JSON.stringify(nodes));
+
+        let index = 0;
+
+        flushedNodes.push(nodes[index].value)
+        for (let i = 1; i < nodes.length; i++){
+            if (flushNodes[index] === nodes[i].value){
+                //skip
+            }else{
+                flushNodes.push(nodes[i].value)
+                index++;
+            }
+        }
+
         nodes = [];
-        return nodesCopy;
+
     }
 
 
     return (
-        <div>
+    <>
+        <div
+            style={{
+                flex: "3 1 75%",
+                marginLeft: "10px",
+                padding: "10px",
+                border: "1px solid gray",
+                minHeight: "400px",
+                fontSize: "1.2vw", // Larger font for larger box
+            }}
+          >
+            <h2 style={{ fontSize: "2vw" }}>MemTable</h2>
+          <hr />
             <AnimatePresence>
                 {nodes.map((node, index) => (
                     <motion.div
@@ -74,6 +100,7 @@ const SkipList = ({ getValue }) => {
             >
                 Insert Node
             </button>
+
             {/* Draw arrows between nodes */}
             {nodes.map((node, index) => {
                 const nextNode = nodes.find(n => n.value === node.value && n.level === node.level + 1);
@@ -88,6 +115,44 @@ const SkipList = ({ getValue }) => {
                 );
             })}
         </div>
+        <div
+            style={{
+                flex: "3 1 75%",
+                marginLeft: "10px",
+                padding: "10px",
+                border: "1px solid gray",
+                minHeight: "400px",
+                fontSize: "1.2vw", // Larger font for larger box
+            }}
+          >
+            <h2 style={{ fontSize: "2vw" }}>SSTable</h2>
+          <hr />
+
+          <AnimatePresence>
+                {flushedNodes.map((node, index) => (
+                    <motion.div
+                        key={index}
+                        id={`node-${node.value}-${node.level}`} // Add id
+                        style={{ position: 'absolute' }}
+                        initial={{ opacity: 0, x: -50 }} // start state
+                        animate={{ opacity: 1, x: node.value * 50, y: node.level * 50 }} // end state
+                        exit={{ opacity: 0, x: -50 }} // exit state
+                        transition={{ duration: 1, delay: index * 0.1 }} // control the duration and type of animation
+                    >
+                        {node.value}
+                    </motion.div>
+                ))}
+            </AnimatePresence>
+
+          <button 
+                onClick={() => flushNodes()}
+                style={{ position: 'relative', right: 0, bottom: 0 }}
+            >
+                Flush
+            </button>
+
+        </div>
+    </>
     );
     
 };
