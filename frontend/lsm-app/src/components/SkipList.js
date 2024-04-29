@@ -6,8 +6,7 @@ const SkipList = ({ getValue }) => {
     // State for array of nodes
     const [nodes, setNodes] = useState([]);
 
-    // State for number of levels
-    const [levels, setLevels] = useState(0);
+    const [flushedNodes, setFlushedNodes] = useState([]);
 
     // State for number of nodes
     const [numNodes, setNumNodes] = useState(0);
@@ -15,7 +14,6 @@ const SkipList = ({ getValue }) => {
     // State for the last node
     const [lastNode, setLastNode] = useState(null);
 
-    var flushedNodes = [];
 
     useEffect(() => {
         // Random chance for the last node to get promoted to the next level until it fails the coin flip or reaches the max level
@@ -47,21 +45,14 @@ const SkipList = ({ getValue }) => {
     }
 
     function flushNodes(){
-
-        let index = 0;
-
-        flushedNodes.push(nodes[index].value)
-        for (let i = 1; i < nodes.length; i++){
-            if (flushNodes[index] === nodes[i].value){
-                //skip
-            }else{
-                flushNodes.push(nodes[i].value)
-                index++;
-            }
+        const uniqueNodes = [];
+        nodes.forEach(node => {
+        if (!uniqueNodes.find(n => n.value === node.value)) {
+            uniqueNodes.push(node);
         }
-
-        nodes = [];
-
+    });
+    setFlushedNodes(prevFlushedNodes => [...prevFlushedNodes, ...uniqueNodes]);
+    setNodes([]);
     }
 
 
@@ -132,25 +123,19 @@ const SkipList = ({ getValue }) => {
                 {flushedNodes.map((node, index) => (
                     <motion.div
                         key={index}
-                        id={`node-${node.value}-${node.level}`} // Add id
+                        id={`flushed-node-${node.value}-${node.level}`}
                         style={{ position: 'absolute' }}
-                        initial={{ opacity: 0, x: -50 }} // start state
-                        animate={{ opacity: 1, x: node.value * 50, y: node.level * 50 }} // end state
-                        exit={{ opacity: 0, x: -50 }} // exit state
-                        transition={{ duration: 1, delay: index * 0.1 }} // control the duration and type of animation
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={{ opacity: 1, x: node.value * 50, y: node.level * 50 }}
+                        exit={{ opacity: 0, x: -50 }}
+                        transition={{ duration: 1, delay: index * 0.1 }}
                     >
                         {node.value}
                     </motion.div>
                 ))}
             </AnimatePresence>
-
-          <button 
-                onClick={() => flushNodes()}
-                style={{ position: 'relative', right: 0, bottom: 0 }}
-            >
-                Flush
-            </button>
-
+            
+            <button onClick={() => flushNodes()} style={{ position: 'relative', right: 0, bottom: 0 }}>Flush</button>
         </div>
     </>
     );
