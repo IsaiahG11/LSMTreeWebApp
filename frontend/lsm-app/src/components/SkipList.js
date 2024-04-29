@@ -38,11 +38,16 @@ const SkipList = ({ getValue }) => {
         if (nodes.find(node => node.value === value && node.level === 4)) {
             return;
         }
-        console.log({value, level: 4})
     
         setNodes(prevNodes => [...prevNodes, {value, level: 4}]);
         setNumNodes(numNodes + 1);
         setLastNode({value, level: 4});
+    }
+
+    function flushNodes(){
+        let nodesCopy = JSON.parse(JSON.stringify(nodes));
+        nodes = [];
+        return nodesCopy;
     }
 
 

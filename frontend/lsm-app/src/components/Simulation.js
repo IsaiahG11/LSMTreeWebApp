@@ -11,7 +11,6 @@ const Simulation = () => {
   const [transactionLogs, setTransactionLogs] = useState([]); // Store the transaction log data
   const [simulationIndex, setSimulationIndex] = useState(0);
 
-
   const handleFileUpload = async () => {
     if (!file) {
       alert("Please select a file first!");
@@ -54,6 +53,15 @@ const Simulation = () => {
     setSimulationIndex(lastState => lastState + 1);
     console.log(value);
     return value.data.value;
+  }
+
+  function popSSTable(){
+
+    let nodes = SkipList.flushNodes();
+
+    for(let i = 0; i < nodes.length; i++ ){
+      console.log(nodes[i].value)
+    }
   }
 
   return (
@@ -117,6 +125,25 @@ const Simulation = () => {
           <h2 style={{ fontSize: "2vw" }}>Simulation: *sorted by values*</h2>
           <hr />
           <SkipList getValue={getValue} />
+        </div>
+        <div
+          style={{
+            flex: "3 1 75%",
+            marginLeft: "10px",
+            padding: "10px",
+            border: "1px solid gray",
+            minHeight: "400px",
+            fontSize: "1.2vw", // Larger font for larger box
+          }}
+        >
+          <h2 style={{ fontSize: "2vw" }}>SSTable</h2>
+          <hr />
+          <button 
+                onClick={() => popSSTable()}
+                style={{ position: 'relative', right: 0, bottom: 0 }}
+            >
+                Flush
+            </button>
         </div>
       </div>
       <button onClick={() => navigate("/")}>Home</button>
